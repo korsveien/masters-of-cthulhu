@@ -43,7 +43,7 @@
                                                     :elide-asserts true
                                                     :optimizations :advanced}}]}
 
-                   :garden {:builds [{:stylesheet moc.core/app
+                   :garden {:builds [{:stylesheet moc.style.core/app
                                       :source-paths ["src/style"]
                                       :compiler {:output-to "resources/public/app.css"
                                                  :pretty-print? false}}]}}
