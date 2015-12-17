@@ -1,22 +1,20 @@
 (ns moc.log)
 
 (defn- logger [level message]
-  (let [debug-info (str "[" level "]")]
-    (locking *out*
-      (println debug-info message)
-      (flush))))
+  (locking *out*
+    (println level message)))
 
-(defn debug [& args]
-  (logger "DEBUG" (apply str args)))
+(defn debug [msg]
+  (logger "[DEBUG]" msg))
 
-(defn info [& args]
-  (logger "INFO" (apply str args)))
+(defn info [msg]
+  (logger "[INFO]" msg))
 
-(defn warning [& args]
-  (logger "WARNING" (apply str args)))
+(defn warning [msg]
+  (logger "[WARNING]" msg))
 
-(defn error [& args]
-  (logger "ERROR" (apply str args)))
+(defn error [msg]
+  (logger "[ERROR]" msg))
 
 (defn exception [^Exception e]
   (locking *out*

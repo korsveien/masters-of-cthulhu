@@ -30,16 +30,13 @@
                   (assoc :bidi/id handler)
                   (update :params merge route-params)))))
 
-(defn- wrap-app
-  "Given a set of routes, wrap them with middleware"
-  [envars db]
+(defn- wrap-app [envars db]
   (-> router
       (wrap-components envars db)
       (wrap-error-page)
       (log/wrap-with-logger)))
 
-(defn add-http-compressor!
-  [^ChannelPipeline pipeline]
+(defn- add-http-compressor! [^ChannelPipeline pipeline]
   (doto pipeline
     (.addBefore "request-handler" "deflater" (HttpContentCompressor.))))
 
@@ -51,7 +48,7 @@
       (let [{:keys [port cpus]} envars
             pool-size (min 8 (* 2 (max 1 cpus)))
             app (wrap-app envars db)]
-        (log/info "Starting server with " pool-size " threads")
+        (log/info (str "Starting server with " pool-size " threads"))
         (assoc self :server (http/start-server app {:port port
                                                     :executor (Executors/newFixedThreadPool pool-size)
                                                     :pipeline-transform add-http-compressor!})))))
