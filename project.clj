@@ -2,13 +2,23 @@
   :description "A helper application for running Call of Cthulhu games"
   :url "http://github.com/Skinney/moc"
   :license "MIT License"
+
+  :main moc.core
+  :source-paths ["src/backend" "src/common"]
   :min-lein-version "2.5.0"
+  :repl-options {:init-ns repl}
 
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [bidi "1.23.1"]]
+                 [com.stuartsierra/component "0.3.1"]
+                 [bidi "1.23.1"]
 
-  :profiles {:dev {:dependencies [[org.clojure/clojurescript "1.7.170"]
+                 [aleph "0.4.0"]
+                 [potemkin "0.4.2"]]
+
+  :profiles {:dev {:dependencies [[reloaded.repl "0.2.1"]
                                   [garden "1.3.0"]
+
+                                  [org.clojure/clojurescript "1.7.170"]
                                   [org.omcljs/om "1.0.0-alpha28"]
                                   [cljsjs/fastclick "1.0.6-0"]]
 
@@ -36,4 +46,13 @@
                    :garden {:builds [{:stylesheet moc.core/app
                                       :source-paths ["src/style"]
                                       :compiler {:output-to "resources/public/app.css"
-                                                 :pretty-print? false}}]}}})
+                                                 :pretty-print? false}}]}}
+
+             :uberjar {:aot [moc.core]
+                       :omit-source true
+                       :global-vars {*assert* false}}}
+
+    :clean-targets ^{:protect false} ["resources/public/app.js"
+                                      "resources/public/js_tmp"
+                                      "resources/public/app.css"
+                                      "target"])
