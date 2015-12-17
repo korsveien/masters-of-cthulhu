@@ -1,13 +1,13 @@
 (ns moc.http
   (:require [com.stuartsierra.component :as component]
             [bidi.bidi :as bidi]
-            [aleph.http :as http]
+            [ring.adapter.jetty :refer [run-jetty]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
+            [ring.middleware.not-modified :refer [wrap-not-modified]]
+            [ring.middleware.resource :refer [wrap-resource]]
             [moc.log :as log]
             [moc.urls :refer [urls]]
-            [moc.routes.dispatch :refer [dispatch]])
-  (:import java.util.concurrent.Executors
-           io.netty.channel.ChannelPipeline
-           io.netty.handler.codec.http.HttpContentCompressor))
+            [moc.routes.dispatch :refer [dispatch]]))
 
 (defn- wrap-error-page
   [handler]
@@ -33,12 +33,11 @@
 (defn- wrap-app [envars db]
   (-> router
       (wrap-components envars db)
+      (wrap-resource "public")
+      (wrap-content-type)
+      (wrap-not-modified)
       (wrap-error-page)
       (log/wrap-with-logger)))
-
-(defn- add-http-compressor! [^ChannelPipeline pipeline]
-  (doto pipeline
-    (.addBefore "request-handler" "deflater" (HttpContentCompressor.))))
 
 (defrecord Server [server envars db]
   component/Lifecycle
@@ -46,15 +45,16 @@
     (if server
       self
       (let [{:keys [port cpus]} envars
-            pool-size (min 8 (* 2 (max 1 cpus)))
+            pool-size (min 16 (* 2 (max 2 cpus)))
             app (wrap-app envars db)]
         (log/info (str "Starting server with " pool-size " threads"))
-        (assoc self :server (http/start-server app {:port port
-                                                    :executor (Executors/newFixedThreadPool pool-size)
-                                                    :pipeline-transform add-http-compressor!})))))
+        (assoc self :server (run-jetty app {:port port
+                                            :join? false
+                                            :max-threads pool-size
+                                            :min-threads pool-size})))))
 
   (stop [self]
     (log/info "Shutting down server")
     (when server
-      (.close server))
+      (.stop server))
     (assoc self :server nil)))

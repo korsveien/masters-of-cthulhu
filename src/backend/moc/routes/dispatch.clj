@@ -1,7 +1,8 @@
-(ns moc.routes.dispatch)
+(ns moc.routes.dispatch
+  (:require [ring.util.response :as response]))
 
 (defmulti dispatch :bidi/id)
 
-(defmethod dispatch nil [req]
-  (println req)
-  {:status 404})
+(defmethod dispatch :default [_]
+  (-> (response/resource-response "index.html" {:root "public"})
+      (response/content-type "text/html")))

@@ -12,8 +12,8 @@
                  [com.stuartsierra/component "0.3.1"]
                  [bidi "1.23.1"]
 
-                 [aleph "0.4.0"]
-                 [potemkin "0.4.2"]]
+                 [ring/ring-core "1.4.0"]
+                 [ring/ring-jetty-adapter "1.4.0"]]
 
   :profiles {:dev {:dependencies [[reloaded.repl "0.2.1"]
                                   [garden "1.3.0"]
@@ -34,7 +34,7 @@
                                          :source-paths ["src/frontend" "src/common"]
                                          :figwheel {:on-jsload "moc.core/reload!"}
                                          :compiler {:main "moc.core"
-                                                    :asset-path "js_tmp"
+                                                    :asset-path "/js_tmp"
                                                     :output-to "resources/public/app.js"
                                                     :output-dir "resources/public/js_tmp"}}
                                         {:id "release"

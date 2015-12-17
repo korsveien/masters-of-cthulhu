@@ -8,9 +8,10 @@
 (defmulti router :handler)
 
 (defn activate! []
-  (let [h (Html5History.)
-        cb (fn [e]
-             (let [result (bidi/match-route urls (.-token e))]
+  (let [cb (fn [e]
+             (let [path js/window.location.pathname
+                   result (bidi/match-route urls path)]
                (router result)))]
-    (events/listen h EventType/NAVIGATE cb)
-    (.setEnabled h true)))
+    (doto (Html5History.)
+      (events/listen EventType/NAVIGATE cb)
+      (.setEnabled true))))
