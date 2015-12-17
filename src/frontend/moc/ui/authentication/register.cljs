@@ -1,15 +1,15 @@
-(ns moc.ui.not-found
+(ns moc.ui.authentication.register
   (:require [om.next :as om :refer-macros [defui]]
             [om.dom :as dom]
             [moc.router :refer [router]]
             [moc.util :as util]))
 
-(defui NotFound
+(defui Register
   Object
   (render [this]
-    (dom/div nil "Page not found!")))
+    (dom/div nil "Register")))
 
-(def not-found (om/factory NotFound))
+(def register (om/factory Register))
 
-(defmethod router :default [_]
-  (util/render (not-found)))
+(defmethod router :user/register [_]
+  (util/render (register)))

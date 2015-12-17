@@ -1,15 +1,15 @@
-(ns moc.ui.not-found
+(ns moc.ui.authentication.login
   (:require [om.next :as om :refer-macros [defui]]
             [om.dom :as dom]
             [moc.router :refer [router]]
             [moc.util :as util]))
 
-(defui NotFound
+(defui Login
   Object
   (render [this]
-    (dom/div nil "Page not found!")))
+    (dom/div nil "Login")))
 
-(def not-found (om/factory NotFound))
+(def login (om/factory Login))
 
-(defmethod router :default [_]
-  (util/render (not-found)))
+(defmethod router :user/login [_]
+  (util/render (login)))
