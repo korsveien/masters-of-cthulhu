@@ -28,7 +28,7 @@
 
                    :figwheel {:http-server-root "public"
                               :server-port 3001
-                              :css-dirs ["resources/public"]}
+                              :css-dirs ["resources/public/css"]}
 
                    :cljsbuild {:builds [{:id "dev"
                                          :source-paths ["src/frontend" "src/common"]
@@ -45,7 +45,7 @@
 
                    :garden {:builds [{:stylesheet moc.style.core/app
                                       :source-paths ["src/style"]
-                                      :compiler {:output-to "resources/public/app.css"
+                                      :compiler {:output-to "resources/public/css/app.css"
                                                  :pretty-print? false}}]}}
 
              :uberjar {:aot [moc.core]
@@ -54,5 +54,5 @@
 
     :clean-targets ^{:protect false} ["resources/public/app.js"
                                       "resources/public/js_tmp"
-                                      "resources/public/app.css"
+                                      "resources/public/css/app.css"
                                       "target"])
