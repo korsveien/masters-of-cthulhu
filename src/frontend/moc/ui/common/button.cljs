@@ -6,6 +6,8 @@
   Object
   (render [this]
     (let [{:keys [title]} (om/props this)]
-      (dom/a #js {} (om/children this)))))
+      (dom/a #js {:href "#"
+                  :className "button"}
+             (om/children this)))))
 
 (def button (om/factory Button))

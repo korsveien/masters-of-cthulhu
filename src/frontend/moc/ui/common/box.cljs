@@ -8,8 +8,9 @@
   (render [this]
     (let [{:keys [title footer]} (om/props this)]
       (dom/div #js {:className "box"}
-               (dom/h2 nil title)
-               (om/children this)
+               (dom/div #js {:className "content"}
+                        (dom/h2 nil title)
+                        (om/children this))
                (when footer
                  (dom/div #js {:className "footer"}
                           footer))))))

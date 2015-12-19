@@ -4,7 +4,7 @@
             [moc.router :refer [router]]
             [moc.util :as util]
             [moc.ui.common.box :refer [box]]
-            [moc.ui.common.input :refer [input]]
+            [moc.ui.common.icon-input :refer [icon-input]]
             [moc.ui.common.button :refer [button]]
             [moc.ui.common.link :refer [link]]))
 
@@ -20,11 +20,12 @@
              (dom/h1 #js {:className "logo"} "Masters of Cthulhu")
              (box {:title "Login"
                    :footer (footer)}
-                  (input {:icon "user"
-                          :placeholder "Email"})
-                  (input {:icon "lock"
-                          :type "password"
-                          :placeholder "Password"})
+                  (icon-input {:icon "user"
+                               :auto-focus true
+                               :placeholder "Email"})
+                  (icon-input {:icon "lock"
+                               :type "password"
+                               :placeholder "Password"})
                   (button nil "Log in")))))
 
 (def login (om/factory Login))

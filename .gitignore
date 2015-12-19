@@ -10,6 +10,6 @@ pom.xml.asc
 /.nrepl-port
 figwheel_server.log
 
-/resources/public/app.css
+/resources/public/css/app.css
 /resources/public/app.js
 /resources/public/js_tmp

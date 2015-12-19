@@ -5,11 +5,10 @@
 (defui Input
   Object
   (render [this]
-    (let [{:keys [icon type placeholder]} (om/props this)]
+    (let [{:keys [type auto-focus placeholder]} (om/props this)]
       (dom/div #js {:className "input-box"}
-               (when icon
-                 (dom/i #js {:className (str "fa fa-" icon)}))
                (dom/input #js {:type (or type "text")
+                               :autoFocus (or auto-focus false)
                                :placeholder placeholder})))))
 
 (def input (om/factory Input))
