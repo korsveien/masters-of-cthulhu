@@ -10,7 +10,7 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [com.stuartsierra/component "0.3.1"]
-                 [bidi "1.23.1"]
+                 [bidi "1.23.2"]
 
                  [ring/ring-core "1.4.0"]
                  [ring/ring-jetty-adapter "1.4.0"]]
@@ -22,7 +22,7 @@
                                   [org.omcljs/om "1.0.0-alpha28"]
                                   [cljsjs/fastclick "1.0.6-0"]]
 
-                   :plugins [[lein-cljsbuild "1.1.1"]
+                   :plugins [[lein-cljsbuild "1.1.2"]
                              [lein-garden "0.2.6"]
                              [lein-figwheel "0.5.0-2"]]
 
