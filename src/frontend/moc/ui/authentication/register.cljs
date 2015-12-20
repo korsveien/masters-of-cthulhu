@@ -16,7 +16,7 @@
 (defui Register
   Object
   (render [this]
-    (dom/div nil
+    (dom/div #js {:className "register-page"}
              (dom/h1 #js {:className "logo"} "Masters of Cthulhu")
              (box {:title "Register"
                    :footer (footer)}

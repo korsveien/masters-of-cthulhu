@@ -16,7 +16,7 @@
 (defui Login
   Object
   (render [this]
-    (dom/div nil
+    (dom/div #js {:className "login-page"}
              (dom/h1 #js {:className "logo"} "Masters of Cthulhu")
              (box {:title "Login"
                    :footer (footer)}
