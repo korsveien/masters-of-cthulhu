@@ -10,7 +10,7 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [com.stuartsierra/component "0.3.1"]
-                 [bidi "1.23.2"]
+                 [bidi "1.24.0"]
 
                  [ring/ring-core "1.4.0"]
                  [ring/ring-jetty-adapter "1.4.0"]]
