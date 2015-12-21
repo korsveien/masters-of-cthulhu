@@ -16,8 +16,7 @@
 
 (def icon-input
   [:.icon-input-box {:position :relative
-                     :margin-bottom (px 20)
-                     :height (px 44)}
+                     :margin-bottom (px 20)}
    [:.icon {:position :absolute
             :left (px 1)
             :top (px 1)
@@ -27,7 +26,7 @@
     [:.fa {:line-height (px 44)
            :font-size (px 22)
            :color color/lighter}]]
-   [:input {:height "100%"
+   [:input {:height (px 44)
             :width "100%"
             :padding "6px 12px"
             :font-size (px 14)
@@ -35,7 +34,12 @@
             :box-shadow :none
             :outline 0
             :border (str "1px solid " color/darker)}
-    [:&:focus {:outline (str "double " color/base)}]]])
+    [:&:focus {:outline (str "double " color/base)}]]
+   [:.error {:text-align :left
+             :margin-top (px 5)}
+    [:.fa {:margin-right (px 10)}]
+    [:.text {:display :inline-block}
+     [:&:first-letter {:text-transform :capitalize}]]]])
 
 (def button
   [:.button {:display :block

@@ -20,7 +20,8 @@
 
                                   [org.clojure/clojurescript "1.7.170"]
                                   [org.omcljs/om "1.0.0-alpha28"]
-                                  [cljsjs/fastclick "1.0.6-0"]]
+                                  [cljsjs/fastclick "1.0.6-0"]
+                                  [bouncer "0.3.3"]]
 
                    :plugins [[lein-cljsbuild "1.1.2"]
                              [lein-garden "0.2.6"]

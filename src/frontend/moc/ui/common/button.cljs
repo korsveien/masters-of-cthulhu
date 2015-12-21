@@ -5,9 +5,10 @@
 (defui Button
   Object
   (render [this]
-    (let [{:keys [title]} (om/props this)]
+    (let [{:keys [on-click]} (om/get-computed this)]
       (dom/a #js {:href "#"
-                  :className "button"}
+                  :className "button"
+                  :onClick #(and on-click (on-click))}
              (om/children this)))))
 
 (def button (om/factory Button))
