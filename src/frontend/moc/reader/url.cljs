@@ -3,3 +3,6 @@
 
 (defmethod reader :url [{:keys [state]} _ _]
   {:value (:url @state)})
+
+(defmethod reader :page-query [{:keys [query parser] :as env} _ _]
+  {:value (parser env query)})

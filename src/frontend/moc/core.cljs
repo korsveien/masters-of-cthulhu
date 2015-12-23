@@ -17,10 +17,11 @@
 
 
 (defn ^:export reload! []
-  (router/navigate! reconciler nil))
+  (router/navigate! nil))
 
 (defn ^:export main []
   (enable-console-print!)
   (.attach js/FastClick js/document.body)
-  (reload!)
-  (om/add-root! reconciler Router (gdom/getElement "app")))
+  (router/set-reconciler! reconciler)
+  (om/add-root! reconciler Router (gdom/getElement "app"))
+  (reload!))

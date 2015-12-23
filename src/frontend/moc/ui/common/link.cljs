@@ -12,7 +12,7 @@
       (dom/a #js {:href "#"
                   :onClick (fn [e]
                              (.preventDefault e)
-                             (navigate! this path))}
+                             (navigate! path))}
              (om/children this)))))
 
 (def link (om/factory Link))
