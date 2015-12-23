@@ -1,12 +1,26 @@
 (ns moc.core
   (:require [cljsjs.fastclick]
+            [om.next :as om]
+            [goog.dom :as gdom]
             [moc.router :as router]
-            [moc.ui.routes]))
+            [moc.ui.router :refer [Router]]
+            [moc.reader.dispatch :refer [reader]]
+            [moc.mutator.dispatch :refer [mutator]]
+            [moc.reader.imports]
+            [moc.mutator.imports]))
+
+(defonce app-state (atom {:url {:handler :index}}))
+
+(defonce reconciler (om/reconciler {:state app-state
+                                    :parser (om/parser {:read reader
+                                                        :mutate mutator})}))
+
 
 (defn ^:export reload! []
-  (router/activate!))
+  (router/navigate! reconciler nil))
 
 (defn ^:export main []
   (enable-console-print!)
   (.attach js/FastClick js/document.body)
-  (reload!))
+  (reload!)
+  (om/add-root! reconciler Router (gdom/getElement "app")))

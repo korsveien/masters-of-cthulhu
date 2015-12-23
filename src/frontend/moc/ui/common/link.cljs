@@ -8,12 +8,11 @@
 (defui Link
   Object
   (render [this]
-    (let [{:keys [path]} (om/props this)
-          url (apply bidi/path-for urls path)]
+    (let [{:keys [path]} (om/props this)]
       (dom/a #js {:href "#"
                   :onClick (fn [e]
                              (.preventDefault e)
-                             (navigate! url))}
+                             (navigate! this path))}
              (om/children this)))))
 
 (def link (om/factory Link))
