@@ -47,4 +47,5 @@
              :text-decoration :none
              :color color/light
              :padding (px 10)
-             :border-radius (px 5)}])
+             :border-radius (px 5)}
+   [:&.loading {:background color/base}]])

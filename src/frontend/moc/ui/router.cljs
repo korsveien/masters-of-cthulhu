@@ -19,15 +19,18 @@
   static om/IQueryParams
   (params [this]
     {:page-query (route->query :index)})
+
   static om/IQuery
   (query [this]
     '[:url {:page-query ?page-query}])
+
   Object
   (componentWillReceiveProps [this props]
     (let [old-route (:url (om/props this))
           new-route (:url props)]
       (when (not= old-route new-route)
         (om/set-query! this {:params {:page-query (route->query (:handler new-route))}}))))
+
   (render [this]
     (let [{:keys [url page-query]} (om/props this)
           handler (:handler url)]

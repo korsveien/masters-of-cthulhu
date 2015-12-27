@@ -11,17 +11,21 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [com.stuartsierra/component "0.3.1"]
                  [bidi "1.24.0"]
+                 [bouncer "1.0.0"]
 
                  [ring/ring-core "1.4.0"]
-                 [ring/ring-jetty-adapter "1.4.0"]]
+                 [ring/ring-jetty-adapter "1.4.0"]
+                 [com.cognitect/transit-clj "0.8.285"]
+                 [clj-time "0.11.0"]]
 
   :profiles {:dev {:dependencies [[reloaded.repl "0.2.1"]
                                   [garden "1.3.0"]
 
                                   [org.clojure/clojurescript "1.7.170"]
                                   [org.omcljs/om "1.0.0-alpha28"]
-                                  [cljsjs/fastclick "1.0.6-0"]
-                                  [bouncer "0.3.3"]]
+                                  [com.andrewmcveigh/cljs-time "0.3.14"]
+                                  [com.cognitect/transit-cljs "0.8.237"]
+                                  [cljsjs/fastclick "1.0.6-0"]]
 
                    :plugins [[lein-cljsbuild "1.1.2"]
                              [lein-garden "0.2.6"]

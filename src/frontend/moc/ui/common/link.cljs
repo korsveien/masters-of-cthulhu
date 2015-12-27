@@ -9,7 +9,7 @@
   Object
   (render [this]
     (let [{:keys [path]} (om/props this)]
-      (dom/a #js {:href "#"
+      (dom/a #js {:href (apply bidi/path-for urls path)
                   :onClick (fn [e]
                              (.preventDefault e)
                              (navigate! path))}

@@ -8,13 +8,15 @@
             [moc.ui.common.button :refer [button]]
             [moc.ui.common.link :refer [link]]))
 
-(defn footer []
-  (dom/span nil
-            "Are you a user? "
-            (link {:path [:user/login]} "Log in")))
-
 (defui Register
+  static om/IQuery
+  (query [_]
+    '[:errors :loading?])
+
   Object
+  (componentWillUnmount [this]
+    (om/transact! this `[(errors/clear)]))
+
   (onEmailUpdate [this value]
     (om/update-state! this assoc :email value))
 
@@ -25,20 +27,28 @@
     (om/update-state! this assoc :confirm-password value))
 
   (onSubmit [this]
-    (if-let [errors (user/validate-register-schema (om/get-state this))]
-      (om/update-state! this assoc :errors errors)
-      (do
-        (om/update-state! this assoc :errors {})
-        (println "valid"))))
+    (let [state (om/get-state this)
+          errors (user/validate-register-schema state)]
+      (if errors
+        (om/transact! this `[(errors/set ~errors)])
+        (om/transact! this `[(errors/clear)
+                             (loading/set)
+                             (user/register ~state)]))))
+
+  (footer [_]
+    (dom/span nil
+              "Are you a user? "
+              (link {:path [:user/login]} "Log in")))
 
   (render [this]
-    (let [{:keys [email password confirm-password errors]} (om/get-state this)]
+    (let [{:keys [errors loading?]} (om/props this)
+          {:keys [email password confirm-password]} (om/get-state this)]
       (dom/div #js {:className "register-page"
                     :onKeyUp #(when (= 13 (-> % .-keyCode))
                                 (.onSubmit this))}
                (dom/h1 #js {:className "logo"} "Masters of Cthulhu")
                (box {:title "Register"
-                     :footer (footer)}
+                     :footer (.footer this)}
                     (icon-input (om/computed {:icon "user"
                                               :auto-focus true
                                               :placeholder "Email"
@@ -57,7 +67,8 @@
                                               :value confirm-password
                                               :error (:confirm-password errors)}
                                              {:on-update #(.onConfPassUpdate this %)}))
-                    (button (om/computed {} {:on-click #(.onSubmit this)})
+                    (button (om/computed {:loading? loading?}
+                                         {:on-click #(.onSubmit this)})
                             "Register"))))))
 
 (def register (om/factory Register))

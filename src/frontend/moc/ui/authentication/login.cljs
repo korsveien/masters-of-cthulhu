@@ -9,7 +9,14 @@
             [moc.ui.common.link :refer [link]]))
 
 (defui Login
+  static om/IQuery
+  (query [this]
+    '[:errors :loading?])
+
   Object
+  (componentWillUnmount [this]
+    (om/transact! this `[(errors/clear)]))
+
   (onEmailUpdate [this value]
     (om/update-state! this assoc :email value))
 
@@ -17,11 +24,13 @@
     (om/update-state! this assoc :password value))
 
   (onLogin [this]
-    (if-let [errors (validate (om/get-state this) user/login-schema)]
-      (om/update-state! this assoc :errors errors)
-      (do
-        (om/update-state! this assoc :errors {})
-        (println "valid"))))
+    (let [state (om/get-state this)
+          errors (validate state user/login-schema)]
+      (if errors
+        (om/transact! this `[(errors/set ~errors)])
+        (om/transact! this `[(errors/clear)
+                             (loading/set)
+                             (user/login ~state)]))))
 
   (footer [_]
     (dom/span nil
@@ -29,7 +38,8 @@
               (link {:path [:user/register]} "Sign up")))
 
   (render [this]
-    (let [{:keys [email password errors]} (om/get-state this)]
+    (let [{:keys [errors loading?]} (om/props this)
+          {:keys [email password]} (om/get-state this)]
       (dom/div #js {:className "login-page"
                     :onKeyUp #(when (= 13 (-> % .-keyCode))
                                 (.onLogin this))}
@@ -48,7 +58,8 @@
                                               :value password
                                               :error (:password errors)}
                                              {:on-update #(.onPasswordUpdate this %)}))
-                    (button (om/computed {} {:on-click #(.onLogin this)})
+                    (button (om/computed {:loading? loading?}
+                                         {:on-click #(.onLogin this)})
                             "Log in"))))))
 
 (def login (om/factory Login))

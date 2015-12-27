@@ -2,6 +2,7 @@
   (:require [cljsjs.fastclick]
             [om.next :as om]
             [goog.dom :as gdom]
+            [moc.ajax :as ajax]
             [moc.router :as router]
             [moc.ui.router :refer [Router]]
             [moc.reader.dispatch :refer [reader]]
@@ -9,9 +10,13 @@
             [moc.reader.imports]
             [moc.mutator.imports]))
 
-(defonce app-state (atom {:url {:handler :index}}))
+(def app-state {:url {:handler :index}
+                :errors {}
+                :loading? false
+                :user/current nil})
 
 (defonce reconciler (om/reconciler {:state app-state
+                                    :send ajax/transit-post
                                     :parser (om/parser {:read reader
                                                         :mutate mutator})}))
 
