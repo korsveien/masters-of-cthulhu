@@ -8,11 +8,11 @@
 
 (deftype DateHandler []
   Object
-  (tag [_ v] "jt")
+  (tag [_ v] "ct")
   (rep [_ v] (time.coerce/to-long v))
   (stringRep [_ v] (time.coerce/to-long v)))
 
-(def read-opts {:handlers {"jt" #(time.coerce/from-long (js/parseInt %))}})
+(def read-opts {:handlers {"ct" #(time.coerce/from-long (js/parseInt %))}})
 (def write-opts {:handlers {goog.date.UtcDateTime (DateHandler.)}})
 
 (defn reader []

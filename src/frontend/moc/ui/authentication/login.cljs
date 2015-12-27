@@ -10,7 +10,7 @@
 
 (defui Login
   static om/IQuery
-  (query [this]
+  (query [_]
     '[:errors :loading?])
 
   Object
