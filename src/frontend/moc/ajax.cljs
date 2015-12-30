@@ -21,11 +21,21 @@
 (defn writer []
   (transit/writer :json write-opts))
 
-(defn transit-post [edn cb]
+(def error-status? #{400 404 500})
+
+(defn transit-post [{:keys [remote]} cb]
   (let [url (bidi/path-for urls :api)]
     (.send XhrIo url
            (fn [e]
-             (this-as this
-                      (cb (transit/read (reader) (.getResponseText this)))))
-           "POST" (transit/write (writer) edn)
+             (let [xhr (.-target e)
+                   status-code (.getStatus xhr)]
+               (cond (error-status? status-code)
+                     (js/alert "Something went wrong. Try again later.")
+
+                     (= 401 status-code)
+                     (js/alert "Unauthenticated!")
+
+                     :else
+                     (cb (transit/read (reader) (.getResponseText xhr))))))
+           "POST" (transit/write (writer) remote)
            #js {"Content-Type" "application/transit+json"})))

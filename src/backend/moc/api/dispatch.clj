@@ -3,6 +3,9 @@
 
 (defmulti reader (fn [_ k _] k))
 
+(defmethod reader :loading? [_ _ _]
+  {:value false})
+
 
 (defmulti mutator (fn [_ k _] k))
 

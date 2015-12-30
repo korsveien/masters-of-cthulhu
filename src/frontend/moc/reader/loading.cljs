@@ -2,4 +2,7 @@
   (:require [moc.reader.dispatch :refer [reader]]))
 
 (defmethod reader :loading? [{:keys [state]} _ _]
-  {:value (:loading? @state)})
+  (let [v (:loading? @state)]
+    (if v
+      {:value v :remote true}
+      {:value v})))

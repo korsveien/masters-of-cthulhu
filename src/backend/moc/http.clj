@@ -29,7 +29,7 @@
 
 (defn- handle-api-request [req]
   (let [{:keys [component/envars body]} req
-        params (:remote (transit/read body))]
+        params (transit/read body)]
     {:status 200
      :headers {"Content-Type" "application/transit+json"}
      :body (transit/write (parser envars params))}))

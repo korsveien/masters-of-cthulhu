@@ -10,12 +10,13 @@
             [moc.reader.imports]
             [moc.mutator.imports]))
 
-(def app-state {:url {:handler :index}
-                :errors {}
-                :loading? false
-                :user/current nil})
+(def default-state {:url {:handler :index}
+                    :errors {}
+                    :loading? false
+                    :user/current nil})
 
-(defonce reconciler (om/reconciler {:state app-state
+(defonce reconciler (om/reconciler {:state (atom default-state)
+                                    :normalize true
                                     :send ajax/transit-post
                                     :parser (om/parser {:read reader
                                                         :mutate mutator})}))

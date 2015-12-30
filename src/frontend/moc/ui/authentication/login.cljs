@@ -30,7 +30,9 @@
         (om/transact! this `[(errors/set ~errors)])
         (om/transact! this `[(errors/clear)
                              (loading/set)
-                             (user/login ~state)]))))
+                             (user/login ~state)
+                             :errors
+                             :loading?]))))
 
   (footer [_]
     (dom/span nil
