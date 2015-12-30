@@ -22,10 +22,11 @@
                                   [garden "1.3.0"]
 
                                   [org.clojure/clojurescript "1.7.170"]
-                                  [org.omcljs/om "1.0.0-alpha28"]
+                                  [cljsjs/fastclick "1.0.6-0"]
+                                  [reagent "0.5.1"]
+                                  [re-frame "0.6.0"]
                                   [com.andrewmcveigh/cljs-time "0.3.14"]
-                                  [com.cognitect/transit-cljs "0.8.237"]
-                                  [cljsjs/fastclick "1.0.6-0"]]
+                                  [com.cognitect/transit-cljs "0.8.237"]]
 
                    :plugins [[lein-cljsbuild "1.1.2"]
                              [lein-garden "0.2.6"]

@@ -2,15 +2,14 @@
   (:require [com.stuartsierra.component :as component]
             [bidi.bidi :as bidi]
             [ring.adapter.jetty :refer [run-jetty]]
-            [ring.util.response :as response]
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
             [ring.middleware.resource :refer [wrap-resource]]
             [moc.log :as log]
             [moc.urls :refer [urls]]
             [moc.transit :as transit]
-            [moc.api.dispatch :refer [parser]]
-            [moc.api.imports]))
+            [moc.routes.dispatch :refer [routes]]
+            [moc.routes.imports]))
 
 (defn- wrap-error-page
   [handler]
@@ -27,19 +26,9 @@
                     :component/db (:spec db)
                     :component/envars envars))))
 
-(defn- handle-api-request [req]
-  (let [{:keys [component/envars body]} req
-        params (transit/read body)]
-    {:status 200
-     :headers {"Content-Type" "application/transit+json"}
-     :body (transit/write (parser envars params))}))
-
 (defn- router [req]
   (let [{:keys [handler]} (bidi/match-route urls (:uri req))]
-    (if (= :api handler)
-      (handle-api-request req)
-      (-> (response/resource-response "index.html" {:root "public"})
-          (response/content-type "text/html")))))
+    (routes (assoc req :bidi/id handler))))
 
 (defn- wrap-app [envars db]
   (-> router

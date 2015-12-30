@@ -1,67 +1,47 @@
 (ns moc.ui.authentication.login
-  (:require [om.next :as om :refer-macros [defui]]
-            [om.dom :as dom]
+  (:require [reagent.core :as reagent]
             [moc.validate.util :refer [validate]]
             [moc.validate.user :as user]
             [moc.ui.common.box :refer [box]]
             [moc.ui.common.icon-input :refer [icon-input]]
             [moc.ui.common.button :refer [button]]
-            [moc.ui.common.link :refer [link]]))
+            [moc.ui.common.link :refer [link]]
+            [moc.ui.common.handlers :refer [pass-to-state!]]))
 
-(defui Login
-  static om/IQuery
-  (query [_]
-    '[:errors :loading?])
+(defn footer []
+  [:span
+   "Not a user? "
+   [link {:path [:url.user/register]} "Sign up"]])
 
-  Object
-  (componentWillUnmount [this]
-    (om/transact! this `[(errors/clear)]))
+(defn on-login [state-atom error-atom]
+  (let [errors (validate @state-atom user/login-schema)]
+    (if errors
+      (reset! error-atom errors)
+      (do
+        (reset! error-atom {})
+        (println "valid")))))
 
-  (onEmailUpdate [this value]
-    (om/update-state! this assoc :email value))
-
-  (onPasswordUpdate [this value]
-    (om/update-state! this assoc :password value))
-
-  (onLogin [this]
-    (let [state (om/get-state this)
-          errors (validate state user/login-schema)]
-      (if errors
-        (om/transact! this `[(errors/set ~errors)])
-        (om/transact! this `[(errors/clear)
-                             (loading/set)
-                             (user/login ~state)
-                             :errors
-                             :loading?]))))
-
-  (footer [_]
-    (dom/span nil
-              "Not a user? "
-              (link {:path [:user/register]} "Sign up")))
-
-  (render [this]
-    (let [{:keys [errors loading?]} (om/props this)
-          {:keys [email password]} (om/get-state this)]
-      (dom/div #js {:className "login-page"
-                    :onKeyUp #(when (= 13 (-> % .-keyCode))
-                                (.onLogin this))}
-               (dom/h1 #js {:className "logo"} "Masters of Cthulhu")
-               (box {:title "Login"
-                     :footer (.footer this)}
-                    (icon-input (om/computed {:icon "user"
-                                              :auto-focus true
-                                              :placeholder "Email"
-                                              :value email
-                                              :error (:email errors)}
-                                             {:on-update #(.onEmailUpdate this %)}))
-                    (icon-input (om/computed {:icon "lock"
-                                              :type "password"
-                                              :placeholder "Password"
-                                              :value password
-                                              :error (:password errors)}
-                                             {:on-update #(.onPasswordUpdate this %)}))
-                    (button (om/computed {:loading? loading?}
-                                         {:on-click #(.onLogin this)})
-                            "Log in"))))))
-
-(def login (om/factory Login))
+(defn login [_]
+  (let [state (reagent/atom {})
+        errors (reagent/atom {})]
+    (fn [_]
+      [:div.login-page {:on-key-up #(when (= 13 (-> % .-keyCode))
+                                      (on-login state errors))}
+       [:h1.logo "Masters of Cthulhu"]
+       [box {:title "Login"
+             :footer [footer]}
+        [icon-input {:icon "user"
+                     :auto-focus true
+                     :placeholder "Email"
+                     :value (:email @state)
+                     :error (:email @errors)
+                     :on-change (pass-to-state! state :email)}]
+        [icon-input {:icon "lock"
+                     :type "password"
+                     :placeholder "Password"
+                     :value (:password @state)
+                     :error (:password @errors)
+                     :on-change (pass-to-state! state :password)}]
+        [button {:loading? (:loading? @state)
+                 :on-click #(on-login state errors)}
+         "Log in"]]])))

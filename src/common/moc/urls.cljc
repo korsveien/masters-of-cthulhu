@@ -1,6 +1,5 @@
 (ns moc.urls)
 
-(def urls ["" {"" :index
-               "/api" :api
-               "/auth" {"/login" :user/login
-                        "/register" :user/register}}])
+(def urls ["" {"" :url/index
+               "/auth" {"/login" :url.user/login
+                        "/register" :url.user/register}}])

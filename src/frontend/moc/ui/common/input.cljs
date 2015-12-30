@@ -1,14 +1,7 @@
-(ns moc.ui.common.input
-  (:require [om.next :as om :refer-macros [defui]]
-            [om.dom :as dom]))
+(ns moc.ui.common.input)
 
-(defui Input
-  Object
-  (render [this]
-    (let [{:keys [type auto-focus placeholder]} (om/props this)]
-      (dom/div #js {:className "input-box"}
-               (dom/input #js {:type (or type "text")
-                               :autoFocus (or auto-focus false)
-                               :placeholder placeholder})))))
-
-(def input (om/factory Input))
+(defn input [{:keys [type auto-focus placeholder]}]
+  [:div.input-box
+   [:input {:type (or type "text")
+            :auto-focus (or auto-focus false)
+            :placeholder placeholder}]])

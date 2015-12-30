@@ -1,18 +1,9 @@
-(ns moc.ui.common.box
-  (:refer-clojure :exclude [Box])
-  (:require [om.next :as om :refer-macros [defui]]
-            [om.dom :as dom]))
+(ns moc.ui.common.box)
 
-(defui Box
-  Object
-  (render [this]
-    (let [{:keys [title footer]} (om/props this)]
-      (dom/div #js {:className "box"}
-               (dom/div #js {:className "content"}
-                        (dom/h2 nil title)
-                        (om/children this))
-               (when footer
-                 (dom/div #js {:className "footer"}
-                          footer))))))
-
-(def box (om/factory Box))
+(defn box [{:keys [title footer]} & children]
+  [:div.box
+   [:div.content
+    [:h2 title]
+    children]
+   (when footer
+     [:div.footer footer])])

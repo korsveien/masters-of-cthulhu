@@ -1,23 +1,14 @@
-(ns moc.ui.common.button
-  (:require [om.next :as om :refer-macros [defui]]
-            [om.dom :as dom]))
+(ns moc.ui.common.button)
 
-(defui Button
-  Object
-  (onClick [this handler]
-    (let [{:keys [loading?]} (om/props this)]
-      (fn [e]
-        (.preventDefault e)
-        (and (not loading?) handler (handler)))))
+(defn- click-event [loading? handler]
+  (fn [e]
+    (.preventDefault e)
+    (and (not loading?) handler (handler))))
 
-  (render [this]
-    (let [{:keys [loading?]} (om/props this)
-          {:keys [on-click]} (om/get-computed this)]
-      (dom/a #js {:href "#"
-                  :className (if loading? "button loading" "button")
-                  :onClick (.onClick this on-click)}
-             (if loading?
-               "Loading..."
-               (om/children this))))))
-
-(def button (om/factory Button))
+(defn button [{:keys [loading? on-click]} & children]
+  [:a {:href "#"
+       :class (if loading? "button loading" "button")
+       :on-click (click-event loading? on-click)}
+   (if loading?
+     "Loading..."
+     children)])
