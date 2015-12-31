@@ -1,4 +1,5 @@
 (ns moc.ajax
+  (:refer-clojure :exclude [get])
   (:require [cognitect.transit :as transit]
             [cljs-time.coerce :as time.coerce]
             [bidi.bidi :as bidi]
@@ -23,19 +24,28 @@
 
 (def error-status? #{400 404 500})
 
-(defn transit-post [{:keys [remote]} cb]
-  (let [url (bidi/path-for urls :api)]
+(defn default-error-handler! []
+  (js/alert "Something went wrong. Try again later."))
+
+(defn request [{:keys [path data on-success on-fail]}]
+  (let [url (apply bidi/path-for urls path)]
     (.send XhrIo url
            (fn [e]
              (let [xhr (.-target e)
-                   status-code (.getStatus xhr)]
+                   status-code (.getStatus xhr)
+                   response (try
+                              (transit/read (reader) (.getResponseText xhr))
+                              (catch js/Error e
+                                nil))]
                (cond (error-status? status-code)
-                     (js/alert "Something went wrong. Try again later.")
+                     (if on-fail
+                       (on-fail response)
+                       (default-error-handler!))
 
                      (= 401 status-code)
                      (js/alert "Unauthenticated!")
 
-                     :else
-                     (cb (transit/read (reader) (.getResponseText xhr))))))
-           "POST" (transit/write (writer) remote)
-           #js {"Content-Type" "application/transit+json"})))
+                     on-success
+                     (on-success response))))
+           "PUT" (transit/write (writer) data)
+           #js {"Content-Type" "application/transit+json; charset=UTF-8"})))

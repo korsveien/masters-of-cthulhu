@@ -27,3 +27,26 @@
   (when body
     (let [reader (transit/reader body :json read-opts)]
       (transit/read reader))))
+
+(defn transit-request? [req]
+  (if-let [type (get-in req [:headers "content-type"])]
+    (.startsWith type "application/transit+json")))
+
+(defn wrap-transit-body [handler]
+  (fn [req]
+    (if (transit-request? req)
+      (let [body (read (:body req))]
+        (handler (assoc req :params body)))
+      (handler req))))
+
+(defn wrap-transit-response [handler]
+  (fn [req]
+    (let [response (handler req)]
+      (if-not (coll? (:body response))
+        response
+        (let [transit-response (update response :body write)]
+          (if (get-in response [:headers "content-type"])
+            transit-response
+            (assoc-in transit-response
+                      [:headers "content-type"]
+                      "application/transit+json; charset=UTF-8")))))))

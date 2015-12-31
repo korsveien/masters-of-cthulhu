@@ -3,6 +3,8 @@
 
 (defmulti routes :bidi/id)
 
-(defmethod routes :default [req]
-  (-> (response/resource-response "index.html" {:root "public"})
-      (response/content-type "text/html")))
+(defmethod routes :default [{:keys [request-method]}]
+  (if (= :get request-method)
+    (-> (response/resource-response "index.html" {:root "public"})
+        (response/content-type "text/html"))
+    {:status 404}))

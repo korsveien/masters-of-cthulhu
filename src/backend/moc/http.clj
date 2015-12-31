@@ -7,7 +7,7 @@
             [ring.middleware.resource :refer [wrap-resource]]
             [moc.log :as log]
             [moc.urls :refer [urls]]
-            [moc.transit :as transit]
+            [moc.transit :refer [wrap-transit-body wrap-transit-response]]
             [moc.routes.dispatch :refer [routes]]
             [moc.routes.imports]))
 
@@ -27,12 +27,17 @@
                     :component/envars envars))))
 
 (defn- router [req]
-  (let [{:keys [handler]} (bidi/match-route urls (:uri req))]
-    (routes (assoc req :bidi/id handler))))
+  (let [{:keys [uri request-method]} req
+        {:keys [handler]} (bidi/match-route urls uri)]
+    (if (= :put request-method)
+      (routes (assoc req :bidi/id handler))
+      (routes req))))
 
 (defn- wrap-app [envars db]
   (-> router
       (wrap-components envars db)
+      (wrap-transit-body)
+      (wrap-transit-response)
       (wrap-resource "public")
       (wrap-content-type)
       (wrap-not-modified)

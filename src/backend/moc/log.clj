@@ -32,7 +32,5 @@
                  " "
                  (:status res)
                  " "
-                 ms
-                 " "
-                 (pr-str (:params res))))
+                 ms))
       res)))

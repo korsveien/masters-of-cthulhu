@@ -1,1 +1,2 @@
-(ns moc.routes.imports)
+(ns moc.routes.imports
+  (:require [moc.routes.user]))
