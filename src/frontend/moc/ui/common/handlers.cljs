@@ -1,5 +1,6 @@
-(ns moc.ui.common.handlers)
+(ns moc.ui.common.handlers
+  (:require [re-frame.core :refer [dispatch]]))
 
-(defn pass-to-state! [state key]
+(defn pass-to-dispatch [key]
   (fn [e]
-    (swap! state assoc key (-> e .-target .-value))))
+    (dispatch [key (-> e .-target .-value)])))
