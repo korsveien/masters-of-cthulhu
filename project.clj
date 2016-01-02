@@ -16,7 +16,12 @@
                  [ring/ring-core "1.4.0"]
                  [ring/ring-jetty-adapter "1.4.0"]
                  [com.cognitect/transit-clj "0.8.285"]
-                 [clj-time "0.11.0"]]
+                 [clj-time "0.11.0"]
+                 [com.layerware/hugsql-core "0.3.1"]
+                 [com.layerware/hugsql-adapter-clojure-jdbc "0.3.1"]
+                 [funcool/clojure.jdbc "0.6.1"]
+                 [org.postgresql/postgresql "9.4-1204-jdbc42"]
+                 [com.zaxxer/HikariCP "2.4.3"]]
 
   :profiles {:dev {:dependencies [[reloaded.repl "0.2.1"]
                                   [garden "1.3.0"]

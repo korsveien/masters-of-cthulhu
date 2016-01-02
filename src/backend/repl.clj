@@ -1,9 +1,11 @@
 (ns repl
   (:require [clojure.repl :refer :all]
             [reloaded.repl :refer [system start stop reset reset-all]]
+            [moc.db :as db]
             [moc.core :refer [prod-system]]
-            [moc.envar :refer [->EnvironmentVariables]]))
+            [repl-system :refer [envars]]))
 
-(def repl-envars (->EnvironmentVariables 1 3000 ""))
+(defn- db-spec []
+  (-> system :db :spec))
 
-(reloaded.repl/set-init! (constantly (prod-system repl-envars)))
+(reloaded.repl/set-init! (constantly (prod-system envars)))
