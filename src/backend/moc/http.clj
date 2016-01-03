@@ -5,14 +5,14 @@
             [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
             [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.cookies :refer [wrap-cookies]]
             [moc.log :as log]
             [moc.urls :refer [urls]]
             [moc.transit :refer [wrap-transit-body wrap-transit-response]]
             [moc.routes.dispatch :refer [routes]]
             [moc.routes.imports]))
 
-(defn- wrap-error-page
-  [handler]
+(defn- wrap-error-page [handler]
   (fn [req]
     (try
       (handler req)
@@ -28,15 +28,19 @@
 
 (defn- router [req]
   (let [{:keys [uri request-method]} req
-        {:keys [handler]} (bidi/match-route urls uri)]
-    (if (= :put request-method)
-      (routes (assoc req :bidi/id handler))
+        {:keys [handler route-params]} (bidi/match-route urls uri)]
+    (if (or (= :put request-method)
+            (= :url.user/token handler))
+      (routes (-> req
+                  (assoc :bidi/id handler)
+                  (update :params merge route-params)))
       (routes req))))
 
 (defn- wrap-app [envars db]
   (-> router
       (wrap-components envars db)
       (wrap-transit-body)
+      (wrap-cookies)
       (wrap-transit-response)
       (wrap-resource "public")
       (wrap-content-type)

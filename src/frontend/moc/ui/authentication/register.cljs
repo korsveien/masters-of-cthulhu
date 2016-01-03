@@ -8,7 +8,7 @@
 
 (defn footer []
   [:span
-   "Are you a user? "
+   "Already have a password? "
    [link {:path [:url.user/login]} "Log in"]])
 
 (defn register [_]
@@ -20,26 +20,17 @@
       [:div.register-page {:on-key-up #(when (= 13 (-> % .-keyCode))
                                          (dispatch [:register/send @state]))}
        [:h1.logo "Masters of Cthulhu"]
-       [box {:title "Register"
+       [box {:title "Login"
              :footer [footer]}
         [icon-input {:icon "user"
                      :auto-focus true
                      :placeholder "Email"
+                     :disabled? (:success? @state)
                      :value (:email @state)
                      :error (:email @errors)
                      :on-change (pass-to-dispatch :register/set-email)}]
-        [icon-input {:icon "lock"
-                     :type "password"
-                     :placeholder "Password"
-                     :value (:password @state)
-                     :error (:password @errors)
-                     :on-change (pass-to-dispatch :register/set-password)}]
-        [icon-input {:icon "lock"
-                     :type "password"
-                     :placeholder "Confirm password"
-                     :value (:confirm-password @state)
-                     :error (:confirm-password @errors)
-                     :on-change (pass-to-dispatch :register/set-confirm-password)}]
-        [button {:loading? @loading?
-                 :on-click #(dispatch [:register/send @state])}
-         "Register"]]])))
+        (if (:success? @state)
+          [:div "Success! An email should arrive shortly with further instructions."]
+          [button {:loading? @loading?
+                   :on-click #(dispatch [:register/send @state])}
+           "Get login link"])]])))

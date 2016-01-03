@@ -8,8 +8,8 @@
 
 (defn footer []
   [:span
-   "Not a user? "
-   [link {:path [:url.user/register]} "Sign up"]])
+   "Forgotten, or don't have, a password? "
+   [link {:path [:url.user/register]} "Get a login link"]])
 
 (defn login [_]
   (dispatch-sync [:login/reset-state])

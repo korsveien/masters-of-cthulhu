@@ -6,7 +6,7 @@
 (register-sub
  :register/form-state
  (fn [db _]
-   (reaction (select-keys (-> @db :ui :user/register) [:email :password :confirm-password]))))
+   (reaction (select-keys (-> @db :ui :user/register) [:email :success?]))))
 
 (register-sub
  :register/form-errors

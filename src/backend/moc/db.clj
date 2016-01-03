@@ -3,15 +3,16 @@
             [jdbc.core :as jdbc]
             [hugsql.core :refer [def-db-fns]]
             [clj-time.core :as time]
+            [moc.log :as log]
             [moc.db.adapter]
-            [moc.log :as log])
+            [moc.db.user :as db.user]
+            [moc.db.token :as db.token])
   (:import com.zaxxer.hikari.HikariDataSource
-           java.net.URI
-           java.util.concurrent.Executors
-           java.util.concurrent.TimeUnit))
+           java.net.URI))
 
-(def-db-fns "sql/migrations/version.sql")
-(def migrations (merge {}))
+(def-db-fns "sql/migrations/version.sql" {:quoting :ansi})
+(def migrations (merge db.user/migrations
+                       db.token/migrations))
 
 (defn run-migrations! [db-spec]
   (setup-versions! db-spec)

@@ -10,6 +10,9 @@
   {:email [v/required v/email]
    :password password-validators})
 
+(def register-schema
+  {:email [v/required v/email]})
+
 (defn validate-register-schema [{:keys [password confirm-password] :as item}]
   (let [errors (validate item login-schema)]
     (if (= password confirm-password)

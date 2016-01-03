@@ -6,8 +6,7 @@
                                       :password ""
                                       :errors {}}
                          :user/register {:email ""
-                                         :password ""
-                                         :confirm-password ""
+                                         :success? false
                                          :errors {}}}})
 
 (register-handler
