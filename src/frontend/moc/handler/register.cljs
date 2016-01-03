@@ -1,6 +1,5 @@
 (ns moc.handler.register
-  (:require [reagent.core :as reagent]
-            [re-frame.core :refer [dispatch register-handler]]
+  (:require [re-frame.core :refer [dispatch register-handler]]
             [moc.ajax :as ajax]
             [moc.validate.util :refer [validate]]
             [moc.validate.user :as user]))

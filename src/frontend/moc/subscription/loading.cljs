@@ -6,4 +6,4 @@
 (register-sub
  :loading?
  (fn [db _]
-   (reaction (not (zero? (:loading? @db))))))
+   (reaction (not (zero? (:loading-count @db))))))

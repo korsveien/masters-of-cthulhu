@@ -3,6 +3,7 @@
   (:require [cognitect.transit :as transit]
             [cljs-time.coerce :as time.coerce]
             [bidi.bidi :as bidi]
+            [re-frame.core :refer [dispatch]]
             [moc.urls :refer [urls]])
   (:import [goog.net XhrIo]
            [goog.date UtcDateTime]))
@@ -28,9 +29,11 @@
   (js/alert "Something went wrong. Try again later."))
 
 (defn request [{:keys [path data on-success on-fail]}]
+  (dispatch [:loading/inc])
   (let [url (apply bidi/path-for urls path)]
     (.send XhrIo url
            (fn [e]
+             (dispatch [:loading/dec])
              (let [xhr (.-target e)
                    status-code (.getStatus xhr)
                    response (try
