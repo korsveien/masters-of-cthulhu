@@ -1,15 +1,18 @@
 (ns moc.core
-  (:require [re-frame.core :refer [dispatch-sync]]
+  (:require [reagent.core :as reagent]
+            [re-frame.core :refer [dispatch-sync]]
+            [goog.dom :as gdom]
             [moc.db]
-            [moc.router :as router]
-            [moc.ui.routes]
+            [moc.router :refer [navigate!]]
+            [moc.ui.router :refer [router]]
             [moc.subscription.imports]
             [moc.handler.imports]))
 
 (defn ^:export reload! []
-  (router/navigate! nil))
+  (navigate! nil))
 
 (defn ^:export main []
   (enable-console-print!)
   (dispatch-sync [:app/initialize])
+  (reagent/render [router] (gdom/getElement "app"))
   (reload!))

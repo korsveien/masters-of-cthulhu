@@ -4,9 +4,9 @@
 (register-handler
  :loading/inc
  (fn [db _]
-   (update db :loading-count inc)))
+   (update db :loading/count inc)))
 
 (register-handler
  :loading/dec
  (fn [db _]
-   (update db :loading-count dec)))
+   (update db :loading/count dec)))

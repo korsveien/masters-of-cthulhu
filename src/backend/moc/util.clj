@@ -13,3 +13,6 @@
 (defn date-time-format [time]
   (time.format/unparse (time.format/formatters :rfc822)
                        time))
+
+(defn current-user [req]
+  nil)

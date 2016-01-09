@@ -55,6 +55,13 @@
       (send-login-url! req (:email normalized-email-params) token valid-to)
       {:status 200})))
 
+(defmethod routes :api.user/me [req]
+  (Thread/sleep 2000)
+  (if-let [user (util/current-user req)]
+    {:status 200
+     :body user}
+    {:status 401}))
+
 (defmethod routes :url.user/token [{:keys [component/db params]}]
   (let [token-param (update params :token #(java.util.UUID/fromString %))
         token (db.token/get-valid-by-id db token-param)]

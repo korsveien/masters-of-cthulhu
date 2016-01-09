@@ -4,7 +4,8 @@
             [cljs-time.coerce :as time.coerce]
             [bidi.bidi :as bidi]
             [re-frame.core :refer [dispatch]]
-            [moc.urls :refer [urls]])
+            [moc.urls :refer [urls]]
+            [moc.router :as router])
   (:import [goog.net XhrIo]
            [goog.date UtcDateTime]))
 
@@ -46,7 +47,7 @@
                        (default-error-handler!))
 
                      (= 401 status-code)
-                     (js/alert "Unauthenticated!")
+                     (router/navigate! [:url.user/login])
 
                      on-success
                      (on-success response))))

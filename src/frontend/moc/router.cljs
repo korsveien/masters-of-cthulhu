@@ -1,19 +1,14 @@
 (ns moc.router
   (:require [goog.events :as events]
             [goog.history.EventType :as EventType]
-            [goog.dom :as gdom]
-            [reagent.core :as reagent]
+            [re-frame.core :refer [dispatch]]
             [bidi.bidi :as bidi]
             [moc.urls :refer [urls]])
   (:import goog.history.Html5History))
 
-(defmulti route->component :handler)
-
 (defn route-to-current-path []
-  (let [bidi-info (bidi/match-route urls js/window.location.pathname)
-        component (route->component bidi-info)]
-    (reagent/render [component bidi-info]
-                    (gdom/getElement "app"))))
+  (let [bidi-info (bidi/match-route urls js/window.location.pathname)]
+    (dispatch [:route/set-info bidi-info])))
 
 (defonce history
   (doto (Html5History.)

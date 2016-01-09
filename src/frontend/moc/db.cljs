@@ -1,7 +1,9 @@
 (ns moc.db
-  (:require [re-frame.core :refer [register-handler]]))
+  (:require [re-frame.core :refer [dispatch register-handler]]))
 
-(def initial-state {:loading-count 0
+(def initial-state {:loading/count 0
+                    :route/info nil
+                    :user/current nil
                     :ui {:user/login {:email ""
                                       :password ""
                                       :errors {}}
@@ -12,4 +14,5 @@
 (register-handler
  :app/initialize
  (fn [_ _]
+   (dispatch [:user/get-current])
    initial-state))
