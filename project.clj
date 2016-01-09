@@ -8,7 +8,7 @@
   :min-lein-version "2.5.0"
   :repl-options {:init-ns repl}
 
-  :dependencies [[org.clojure/clojure "1.7.0"]
+  :dependencies [[org.clojure/clojure "1.8.0-RC4"]
                  [com.stuartsierra/component "0.3.1"]
                  [bidi "1.25.0"]
                  [bouncer "1.0.0"]
@@ -29,15 +29,15 @@
   :profiles {:dev {:dependencies [[reloaded.repl "0.2.1"]
                                   [garden "1.3.0"]
 
-                                  [org.clojure/clojurescript "1.7.170"]
+                                  [org.clojure/clojurescript "1.7.228"]
                                   [reagent "0.5.1"]
                                   [re-frame "0.6.0"]
-                                  [com.andrewmcveigh/cljs-time "0.3.14"]
+                                  [com.andrewmcveigh/cljs-time "0.4.0"]
                                   [com.cognitect/transit-cljs "0.8.237"]]
 
                    :plugins [[lein-cljsbuild "1.1.2"]
                              [lein-garden "0.2.6"]
-                             [lein-figwheel "0.5.0-2"]]
+                             [lein-figwheel "0.5.0-3"]]
 
                    :figwheel {:http-server-root "public"
                               :server-port 3001
@@ -47,6 +47,7 @@
                                          :source-paths ["src/frontend" "src/common"]
                                          :figwheel {:on-jsload "moc.core/reload!"}
                                          :compiler {:main "moc.core"
+                                                    :parallel-build true
                                                     :asset-path "/js_tmp"
                                                     :output-to "resources/public/app.js"
                                                     :output-dir "resources/public/js_tmp"}}
@@ -54,6 +55,7 @@
                                          :source-paths ["src/frontend" "src/common"]
                                          :compiler {:output-to "resources/public/app.js"
                                                     :elide-asserts true
+                                                    :parallel-build true
                                                     :optimizations :advanced}}]}
 
                    :garden {:builds [{:stylesheet moc.style.core/app
