@@ -1,5 +1,6 @@
 (ns moc.routes.user
-  (:require [clj-uuid :as uuid]
+  (:require [clojure.string :as str]
+            [clj-uuid :as uuid]
             [clj-time.core :as ct]
             [bidi.bidi :as bidi]
             [ring.util.response :as ru]
@@ -47,8 +48,11 @@
   (if-let [errors (validate params validate.user/register-schema)]
     {:status 400
      :body errors}
-    (let [[token valid-to] (ensure-user-login db params)]
-      (send-login-url! req (:email params) token valid-to)
+    (let [normalized-email-params (update params :email #(-> %
+                                                             (str/trim)
+                                                             (str/lower-case)))
+          [token valid-to] (ensure-user-login db normalized-email-params)]
+      (send-login-url! req (:email normalized-email-params) token valid-to)
       {:status 200})))
 
 (defmethod routes :url.user/token [{:keys [component/db params]}]
