@@ -2,6 +2,10 @@
   (:require [garden.units :refer [px]]
             [moc.style.palette :as color]))
 
+(def loading-page
+  [:.loading-page {:margin-top (px 50)
+                   :text-align :center}])
+
 (def box
   [:.box {:width (px 350)
           :margin "0 auto"

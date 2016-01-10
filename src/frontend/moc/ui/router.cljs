@@ -10,12 +10,17 @@
     :url.user/register register
     not-found))
 
+(defn loading-page []
+  [:div.loading-page
+   [:h2 "Loading"]
+   [:i.fa.fa-spin.fa-spinner]])
+
 (defn router []
   (let [loading? (subscribe [:loading?])
         user (subscribe [:user/current])
         route-info (subscribe [:route/info])]
     (fn []
       (if (or (and (nil? @user) @loading?))
-        [:div "LOADING"]
+        [loading-page]
         (let [component (route->component @route-info)]
           [component @route-info])))))

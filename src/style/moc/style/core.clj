@@ -15,6 +15,7 @@
   [:h1 :h2 :h3 {:margin 0
                 :margin-bottom (px 20)}]
 
+  common/loading-page
   common/box
   common/icon-input
   common/button
