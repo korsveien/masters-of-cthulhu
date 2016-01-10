@@ -32,7 +32,7 @@
     (if (or (= :put request-method)
             (= :url.user/token handler))
       (routes (-> req
-                  (assoc :bidi/id handler)
+                  (assoc :route/id handler)
                   (update :params merge route-params)))
       (routes req))))
 

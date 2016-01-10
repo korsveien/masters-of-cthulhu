@@ -69,6 +69,8 @@
           db-spec (setup-connection-pool envars pool-size)]
       (log/info (str "Initializing database with " pool-size " connections"))
       (run-migrations! db-spec)
+      (log/info "Removing invalid tokens")
+      (db.token/remove-invalid! db-spec)
       (assoc self
              :spec db-spec
              :scheduler scheduler)))

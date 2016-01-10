@@ -1,7 +1,7 @@
 (ns moc.routes.dispatch
   (:require [ring.util.response :as response]))
 
-(defmulti routes :bidi/id)
+(defmulti routes :route/id)
 
 (defmethod routes :default [{:keys [request-method]}]
   (if (= :get request-method)

@@ -34,8 +34,9 @@
                :body (login-msg (login-url req token) valid-to)}))
 
 (defn ensure-user-login [db email-map]
-  (let [user (or (db.user/get-by-email db email-map)
-                 (db.user/create<! db email-map))
+  (let [email-query (assoc email-map :fields ["id"])
+        user (or (db.user/get-by-email db email-query)
+                 (db.user/create<! db email-query))
         token (uuid/v4)
         valid-to (ct/plus (ct/now)
                           (ct/days 1))]
@@ -56,14 +57,13 @@
       {:status 200})))
 
 (defmethod routes :api.user/me [req]
-  (Thread/sleep 2000)
   (if-let [user (util/current-user req)]
     {:status 200
      :body user}
     {:status 401}))
 
 (defmethod routes :url.user/token [{:keys [component/db params]}]
-  (let [token-param (update params :token #(java.util.UUID/fromString %))
+  (let [token-param (update params :token #(UUID/fromString %))
         token (db.token/get-valid-by-id db token-param)]
     (if token
       (let [login-token (uuid/v4)

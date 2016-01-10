@@ -1,12 +1,14 @@
---:name get-by-id :? :1
-SELECT *
-FROM users
-WHERE id = :v:id
-
 --:name get-by-email :? :1
-SELECT *
+SELECT :i*:fields
 FROM users
 WHERE email = :v:email
+
+--:name get-by-token :? :1
+SELECT :i*:fields
+FROM users
+JOIN tokens ON users.id = tokens."user-id"
+WHERE tokens.id = :v:token
+AND tokens."valid-to" > CURRENT_TIMESTAMP
 
 --:name create<! :? :1
 INSERT INTO users (email)
