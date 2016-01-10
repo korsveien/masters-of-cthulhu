@@ -55,6 +55,7 @@
                                          :source-paths ["src/frontend" "src/common"]
                                          :compiler {:output-to "resources/public/app.js"
                                                     :elide-asserts true
+                                                    :closure-defines {"goog.DEBUG" false}
                                                     :parallel-build true
                                                     :optimizations :advanced}}]}
 
