@@ -13,7 +13,7 @@
 (defn loading-page []
   [:div.loading-page
    [:h2 "Loading"]
-   [:i.fa.fa-spin.fa-spinner]])
+   [:i.fa.fa-spin.fa-spinner.fa-2x]])
 
 (defn router []
   (let [loading? (subscribe [:loading?])

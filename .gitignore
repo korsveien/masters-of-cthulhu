@@ -11,6 +11,6 @@ pom.xml.asc
 figwheel_server.log
 
 /src/backend/repl_system.clj
-/resources/public/css/app.css
+/resources/public/app.css
 /resources/public/app.js
 /resources/public/js_tmp
