@@ -53,3 +53,36 @@
              :padding (px 10)
              :border-radius (px 5)}
    [:&.loading {:background color/base}]])
+
+(def sidebar-layout
+  [:.sidebar-layout {:position :relative
+                     :height "100%"}
+
+   [:.sidebar {:position :relative
+               :width (px 260)
+               :height "100%"
+               :background color/base}
+    [:.dropdown {:list-style :none
+                 :padding "5px 10px"
+                 :margin 0
+                 :height (px 40)
+                 :line-height (px 30)
+                 :background color/darker
+                 :cursor :pointer}
+     [:li {:position :relative}
+      [:i.fa.fa-chevron-down {:position :absolute
+                              :height (px 25)
+                              :line-height (px 25)
+                              :right (px 10)}]]]
+    [:.sidebar-content {:padding (px 10)}]
+    [:.footer {:position :absolute
+               :bottom 0}]]
+
+   [:.content {:position :absolute
+               :background color/white
+               :left (px 260)
+               :right 0
+               :top 0
+               :bottom 0}
+    [:.footer {:position :absolute
+               :bottom 0}]]])

@@ -15,10 +15,13 @@
   [:h1 :h2 :h3 {:margin 0
                 :margin-bottom (px 20)}]
 
+  [:.right-breather {:margin-right (px 10)}]
+
   common/loading-page
   common/box
   common/icon-input
   common/button
+  common/sidebar-layout
 
   auth/login-page
   auth/register-page)

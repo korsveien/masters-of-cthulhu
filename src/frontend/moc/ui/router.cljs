@@ -2,10 +2,12 @@
   (:require [re-frame.core :refer [subscribe]]
             [moc.ui.authentication.login :refer [login]]
             [moc.ui.authentication.register :refer [register]]
+            [moc.ui.dashboard.game-list :refer [game-list]]
             [moc.ui.not-found :refer [not-found]]))
 
 (defn route->component [route-info]
   (case (:handler route-info)
+    :url/index game-list
     :url.user/login login
     :url.user/register register
     not-found))
