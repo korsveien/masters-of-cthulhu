@@ -22,6 +22,7 @@
   common/icon-input
   common/button
   common/sidebar-layout
+  common/link-list
 
   auth/login-page
   auth/register-page)

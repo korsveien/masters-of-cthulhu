@@ -5,5 +5,7 @@
 (defn game-list [_]
   (let []
     (fn [_]
-      [layout
+      [layout {:header [:span
+                        [:span.title "Games"]
+                        [:i.fa.fa-plus]]}
        [:div "game list"]])))

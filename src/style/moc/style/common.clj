@@ -1,5 +1,6 @@
 (ns moc.style.common
   (:require [garden.units :refer [px]]
+            [garden.stylesheet :refer [at-media]]
             [moc.style.palette :as color]))
 
 (def loading-page
@@ -58,10 +59,15 @@
   [:.sidebar-layout {:position :relative
                      :height "100%"}
 
-   [:.sidebar {:position :relative
+   [:.sidebar {:position :absolute
                :width (px 260)
+               :left (px 0)
                :height "100%"
-               :background color/base}
+               :background color/base
+               :transition "left 150ms ease-in-out"}
+    (at-media {:screen true
+               :max-width (px 768)}
+              [:&.hidden {:left (px -260)}])
     [:.dropdown {:list-style :none
                  :padding "5px 10px"
                  :margin 0
@@ -83,6 +89,25 @@
                :left (px 260)
                :right 0
                :top 0
-               :bottom 0}
+               :bottom 0
+               :transition "left 150ms ease-in-out"}
     [:.footer {:position :absolute
-               :bottom 0}]]])
+               :bottom 0}]
+    (at-media {:screen true
+               :max-width (px 768)}
+              [:&.hidden {:left (px 0)}])
+    (at-media {:screen true
+               :min-width (px 768)}
+              [:.sidebar-toggle {:display :none}])]])
+
+(def link-list
+  [:ul.link-list {:padding 0
+                  :margin 0
+                  :list-style :none}
+   [:li {:border-bottom "1px solid"}
+    [:a {:display :block
+         :text-decoration :none
+         :color :black
+         :padding (px 5)}
+     [:&:hover {:background color/darker}]
+     [:&:active {:color color/lighter}]]]])

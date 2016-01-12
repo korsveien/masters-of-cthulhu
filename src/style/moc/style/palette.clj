@@ -1,6 +1,7 @@
 (ns moc.style.palette)
 
 (def white "#FFFDF6")
+(def light "#FFFDF6")
 (def lighter "#FFF9E3")
 (def base "#F8ECC2")
 (def darker "#D4C38A")

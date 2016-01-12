@@ -4,8 +4,8 @@
             [moc.router :refer [navigate!]]))
 
 (defn link [{:keys [path]} & children]
-  [:a {:href (apply bidi/path-for urls path)
-       :on-click (fn [e]
-                   (.preventDefault e)
-                   (navigate! path))}
-   children])
+  (into [:a {:href (apply bidi/path-for urls path)
+             :on-click (fn [e]
+                         (.preventDefault e)
+                         (navigate! path))}]
+        children))
