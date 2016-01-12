@@ -3,6 +3,9 @@
             [moc.ui.authentication.login :refer [login]]
             [moc.ui.authentication.register :refer [register]]
             [moc.ui.dashboard.game-list :refer [game-list]]
+            [moc.ui.dashboard.new-game :refer [new-game]]
+            [moc.ui.dashboard.profile :refer [profile]]
+            [moc.ui.dashboard.password :refer [password]]
             [moc.ui.not-found :refer [not-found]]))
 
 (defn route->component [route-info]
@@ -10,6 +13,9 @@
     :url/index game-list
     :url.user/login login
     :url.user/register register
+    :url.user/profile profile
+    :url.user/password password
+    :url.game/new new-game
     not-found))
 
 (defn loading-page []

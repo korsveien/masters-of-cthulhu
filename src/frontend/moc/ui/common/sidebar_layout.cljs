@@ -21,7 +21,9 @@
        [sidebar @sidebar-visible? (:sidebar opts)]
        (into [:div.content {:className (if @sidebar-visible? "" "hidden")}
               [:div.header
-               [:i.fa.fa-bars.sidebar-toggle {:on-click #(swap! sidebar-visible? not)}]
+               [:i.fa.fa-bars.sidebar-toggle {:on-click (fn [e]
+                                                          (.preventDefault e)
+                                                          (swap! sidebar-visible? not))}]
                (-> opts :content :header)]
               [:div.footer
                (-> opts :content :footer)]]

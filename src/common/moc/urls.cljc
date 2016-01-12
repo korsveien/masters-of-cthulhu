@@ -7,6 +7,7 @@
                         "/logout" :url.user/logout}
                 "dashboard" {"/account" :url.user/profile
                              "/password" :url.user/password}
+                "game" {"/new" :url.game/new}
                 "api" {"/auth" {"/login" :api.user/login
                                 "/register" :api.user/register}
                        "/user" {"/me" :api.user/me}}}])
