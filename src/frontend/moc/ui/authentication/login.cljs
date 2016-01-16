@@ -1,7 +1,7 @@
 (ns moc.ui.authentication.login
   (:require [re-frame.core :refer [dispatch dispatch-sync subscribe]]
             [moc.ui.common.box :refer [box]]
-            [moc.ui.common.icon-input :refer [icon-input]]
+            [moc.ui.common.input :refer [input]]
             [moc.ui.common.button :refer [button]]
             [moc.ui.common.link :refer [link]]
             [moc.ui.common.handlers :refer [pass-to-dispatch]]))
@@ -22,18 +22,19 @@
        [:h1.logo "Masters of Cthulhu"]
        [box {:title "Login"
              :footer [footer]}
-        [icon-input {:icon "user"
-                     :auto-focus true
-                     :placeholder "Email"
-                     :value (:email @state)
-                     :error (:email @errors)
-                     :on-change (pass-to-dispatch :login/set-email)}]
-        [icon-input {:icon "lock"
-                     :type "password"
-                     :placeholder "Password"
-                     :value (:password @state)
-                     :error (:password @errors)
-                     :on-change (pass-to-dispatch :login/set-password)}]
-        [button {:loading? @loading?
+        [input {:icon "user"
+                :auto-focus true
+                :placeholder "Email"
+                :value (:email @state)
+                :error (:email @errors)
+                :on-change (pass-to-dispatch :login/set-email)}]
+        [input {:icon "lock"
+                :type "password"
+                :placeholder "Password"
+                :value (:password @state)
+                :error (:password @errors)
+                :on-change (pass-to-dispatch :login/set-password)}]
+        [button {:is-block? true
+                 :loading? @loading?
                  :on-click #(dispatch [:login/send @state])}
          "Log in"]]])))

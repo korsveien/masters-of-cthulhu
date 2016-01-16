@@ -18,8 +18,8 @@
     :url.game/new new-game
     not-found))
 
-(defn loading-page []
-  [:div.loading-page
+(defn loading-page [visible?]
+  [:div.loading-page {:class (if visible? "visible")}
    [:h2 "Loading"]
    [:i.fa.fa-spin.fa-spinner.fa-2x]])
 
@@ -28,7 +28,7 @@
         user (subscribe [:user/current])
         route-info (subscribe [:route/info])]
     (fn []
-      (if (or (and (nil? @user) @loading?))
-        [loading-page]
-        (let [component (route->component @route-info)]
-          [component @route-info])))))
+      (let [component (route->component @route-info)]
+        [:div#app-wrapper
+         [loading-page (and (nil? @user) @loading?)]
+         [component @route-info]]))))

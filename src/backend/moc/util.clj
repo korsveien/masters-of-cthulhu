@@ -22,5 +22,9 @@
 
 (defn current-user [{:keys [component/db] :as req}]
   (when-let [token (current-token req)]
-    (db.user/get-by-token db {:fields ["users.id" "name" "email"]
-                              :token token})))
+    (let [user (db.user/get-by-token db {:fields ["users.id"
+                                                  "name"
+                                                  "email"
+                                                  "password"]
+                                         :token token})]
+      (update user :password #(if % true false)))))

@@ -5,10 +5,12 @@
     (.preventDefault e)
     (and (not loading?) handler (handler))))
 
-(defn button [{:keys [loading? on-click]} & children]
+(defn button [{:keys [is-block? loading? on-click]} text]
   [:a {:href "#"
-       :class (if loading? "button loading" "button")
+       :class (str "button"
+                   (if is-block? " full-width")
+                   (if loading? " loading"))
        :on-click (click-event loading? on-click)}
    (if loading?
      "Loading..."
-     children)])
+     text)])

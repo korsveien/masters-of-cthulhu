@@ -7,19 +7,20 @@
 
 (defstyles app
   [:* {:box-sizing :border-box}]
-  [:html :body :#app {:height "100%"
-                      :margin 0
-                      :font-family "'Open Sans', sans-serif"
-                      :background color/base}]
+  [:html :body :#app :#app-wrapper {:height "100%"
+                                    :margin 0
+                                    :font-family "'Open Sans', sans-serif"
+                                    :background color/base}]
 
   [:h1 :h2 :h3 {:margin 0
                 :margin-bottom (px 20)}]
 
+  [:.full-width {:width "100%"}]
   [:.right-breather {:margin-right (px 10)}]
 
   common/loading-page
   common/box
-  common/icon-input
+  common/input
   common/button
   common/sidebar-layout
   common/link-list
