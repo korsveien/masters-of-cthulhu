@@ -7,7 +7,7 @@
 
 (defn route->component [{:keys [handler]}]
   (let [root (and handler (namespace handler))]
-    (cond (or (= handler :url/index) (= handler :url.game/new) (= root "url.user"))
+    (cond (= root "url.dashboard")
           dashboard/layout
 
           (= handler :url.auth/login)

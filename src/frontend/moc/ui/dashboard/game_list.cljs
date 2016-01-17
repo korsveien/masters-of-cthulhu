@@ -5,7 +5,7 @@
 (defn game-list-header []
   [:span
    [:span.title "Games"]
-   [:span.right [link {:path [:url.game/new]} [:i.fa.fa-plus]]]])
+   [:span.right [link {:path [:url.dashboard/new-game]} [:i.fa.fa-plus]]]])
 
 (defn game-list [_]
   (let []
