@@ -2,21 +2,22 @@
   (:require [re-frame.core :refer [subscribe]]
             [moc.ui.authentication.login :refer [login]]
             [moc.ui.authentication.register :refer [register]]
-            [moc.ui.dashboard.game-list :refer [game-list]]
-            [moc.ui.dashboard.new-game :refer [new-game]]
-            [moc.ui.dashboard.profile :refer [profile]]
-            [moc.ui.dashboard.password :refer [password]]
+            [moc.ui.dashboard.layout :as dashboard]
             [moc.ui.not-found :refer [not-found]]))
 
-(defn route->component [route-info]
-  (case (:handler route-info)
-    :url/index game-list
-    :url.user/login login
-    :url.user/register register
-    :url.user/profile profile
-    :url.user/password password
-    :url.game/new new-game
-    not-found))
+(defn route->component [{:keys [handler]}]
+  (let [root (namespace handler)]
+    (cond (or (= handler :url/index) (= root "url.user"))
+          dashboard/layout
+
+          (= handler :url.auth/login)
+          login
+
+          (= handler :url.auth/register)
+          register
+
+          :else
+          not-found)))
 
 (defn loading-page [visible?]
   [:div.loading-page {:class (if visible? "visible")}

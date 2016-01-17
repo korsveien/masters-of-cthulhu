@@ -1,8 +1,8 @@
 (ns moc.ui.common.link-list
   (:require [moc.ui.common.link :refer [link]]))
 
-(defn link-list [& elements]
+(defn link-list [current-path & elements]
   (into [:ul.link-list]
         (for [{:keys [text href]} elements]
-          [:li
+          [:li {:class (if (= current-path (first href)) "active")}
            [link {:path href} text]])))

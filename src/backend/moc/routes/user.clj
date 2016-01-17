@@ -45,7 +45,7 @@
                           :valid-to valid-to})
     [token valid-to]))
 
-(defmethod routes :api.user/register [{:keys [component/db params] :as req}]
+(defmethod routes :api.auth/register [{:keys [component/db params] :as req}]
   (if-let [errors (validate params validate.user/register-schema)]
     {:status 400
      :body errors}
@@ -56,13 +56,13 @@
       (send-login-url! req (:email normalized-email-params) token valid-to)
       {:status 200})))
 
-(defmethod routes :api.user/me [req]
+(defmethod routes :api.auth/me [req]
   (if-let [user (util/current-user req)]
     {:status 200
      :body user}
     {:status 401}))
 
-(defmethod routes :url.user/token [{:keys [component/db params]}]
+(defmethod routes :url.auth/token [{:keys [component/db params]}]
   (let [token-param (update params :token #(UUID/fromString %))
         token (db.token/get-valid-by-id db token-param)]
     (if token
@@ -79,5 +79,5 @@
                             :max-age (* 60 60 24 3)})))
       {:status 404})))
 
-(defmethod routes :api.user/login [req]
+(defmethod routes :api.auth/login [req]
   {:status 400})

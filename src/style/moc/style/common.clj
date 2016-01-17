@@ -117,10 +117,12 @@
   [:ul.link-list {:padding 0
                   :margin 0
                   :list-style :none}
-   [:li {:border-bottom "1px solid"}
+   [:li {:border-bottom "1px solid black"}
     [:a {:display :block
          :text-decoration :none
          :color :black
          :padding (px 5)}
      [:&:hover {:background color/darker}]
-     [:&:active {:color color/lighter}]]]])
+     [:&:active {:color color/lighter}]]
+    [:&.active
+     [:a {:background color/dark}]]]])
