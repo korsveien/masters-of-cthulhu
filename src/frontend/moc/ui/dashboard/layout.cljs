@@ -10,7 +10,8 @@
   (case handler
     :url/index [game-list game-list-header]
     :url.user/profile [profile profile-header]
-    :url.user/password [password password-header]))
+    :url.user/password [password password-header]
+    :url.game/new [new-game new-game-header]))
 
 (defn layout [{:keys [handler]}]
   [sidebar-layout {:sidebar {:dropdown [{:title "Dashboard"
@@ -24,6 +25,6 @@
                                        {:text "Password"
                                         :href [:url.user/password]}
                                        {:text "Log out"
-                                        :href [:url.user/logout]}]}
+                                        :href [:url.auth/logout]}]}
                    :content {:header [(second (router handler))]}}
    [(first (router handler))]])

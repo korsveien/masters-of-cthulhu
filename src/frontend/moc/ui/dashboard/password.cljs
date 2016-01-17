@@ -10,7 +10,7 @@
   (let [loading? (subscribe [:loading?])]
     (fn [_]
       [:div
-       [input {:label "Password"
+       [input {:label "New password"
                :type "password"
                :auto-focus true}]
        [input {:label "Confirm password"

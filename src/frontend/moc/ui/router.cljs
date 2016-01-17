@@ -6,8 +6,8 @@
             [moc.ui.not-found :refer [not-found]]))
 
 (defn route->component [{:keys [handler]}]
-  (let [root (namespace handler)]
-    (cond (or (= handler :url/index) (= root "url.user"))
+  (let [root (and handler (namespace handler))]
+    (cond (or (= handler :url/index) (= handler :url.game/new) (= root "url.user"))
           dashboard/layout
 
           (= handler :url.auth/login)

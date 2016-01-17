@@ -1,14 +1,14 @@
 (ns moc.router
   (:require [goog.events :as events]
             [goog.history.EventType :as EventType]
-            [re-frame.core :refer [dispatch-sync]]
+            [re-frame.core :refer [dispatch]]
             [bidi.bidi :as bidi]
             [moc.urls :refer [urls]])
   (:import goog.history.Html5History))
 
 (defn route-to-current-path []
   (let [bidi-info (bidi/match-route urls js/window.location.pathname)]
-    (dispatch-sync [:route/set-info bidi-info])))
+    (dispatch [:route/set-info bidi-info])))
 
 (defonce history
   (doto (Html5History.)

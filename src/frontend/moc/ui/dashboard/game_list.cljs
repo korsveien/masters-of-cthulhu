@@ -1,10 +1,11 @@
 (ns moc.ui.dashboard.game-list
-  (:require [re-frame.core :refer [subscribe]]))
+  (:require [re-frame.core :refer [subscribe]]
+            [moc.ui.common.link :refer [link]]))
 
 (defn game-list-header []
   [:span
    [:span.title "Games"]
-   [:i.fa.fa-plus]])
+   [:span.right [link {:path [:url.game/new]} [:i.fa.fa-plus]]]])
 
 (defn game-list [_]
   (let []

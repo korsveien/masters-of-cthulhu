@@ -47,7 +47,7 @@
                        (default-error-handler!))
 
                      (= 401 status-code)
-                     (router/navigate! [:url.user/login])
+                     (router/navigate! [:url.auth/login])
 
                      on-success
                      (on-success response))))

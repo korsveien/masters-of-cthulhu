@@ -30,7 +30,7 @@
   (let [{:keys [uri request-method]} req
         {:keys [handler route-params]} (bidi/match-route urls uri)]
     (if (or (= :put request-method)
-            (= :url.user/token handler))
+            (= :url.auth/token handler))
       (routes (-> req
                   (assoc :route/id handler)
                   (update :params merge route-params)))

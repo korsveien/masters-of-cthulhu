@@ -7,9 +7,8 @@
             [moc.ui.common.handlers :refer [pass-to-dispatch]]))
 
 (defn footer []
-  [:span
-   "Already have a password? "
-   [link {:path [:url.user/login]} "Log in"]])
+  [link {:path [:url.auth/login]}
+   "Already have a password? \nClick here to log in!"])
 
 (defn register [_]
   (dispatch-sync [:register/reset-state])

@@ -25,7 +25,10 @@
    [:.content {:padding (px 20)}]
    [:.footer {:background color/darker
               :color color/dark
-              :padding (px 20)}]])
+              :padding (px 20)}
+    [:a {:color color/dark
+         :white-space :pre-line
+         :text-decoration :none}]]])
 
 (def input
   [:.input-box {:position :relative
@@ -42,14 +45,17 @@
            :color color/lighter}]]
    [:input {:display :inline-block
             :height (px 44)
-            :min-width (px 200)
+            :min-width (px 260)
             :padding "6px 12px"
             :font-size (px 14)
             :box-shadow :none
             :outline 0
             :border (str "1px solid " color/darker)}
     [:&.with-icon {:padding "6px 12px 6px 50px"}]
-    [:&:focus {:outline (str "double " color/base)}]]
+    [:&:focus {:outline (str "double " color/base)}]
+    (at-media {:screen true
+               :max-width (px 768)}
+              [:& {:width "100%"}])]
    [:.error {:text-align :left
              :margin-top (px 5)}
     [:.fa {:margin-right (px 10)}]
@@ -63,9 +69,12 @@
              :color color/light
              :padding (px 10)
              :border-radius (px 5)
-             :min-width (px 200)
+             :min-width (px 260)
              :text-align :center}
-   [:&.loading {:background color/base}]])
+   [:&.loading {:background color/base}]
+   (at-media {:screen true
+              :max-width (px 768)}
+             [:& {:display :block}])])
 
 (def sidebar-layout
   [:.sidebar-layout {:position :relative
@@ -103,6 +112,17 @@
                :top 0
                :bottom 0
                :transition "left 150ms ease-in-out"}
+    [:.header {:text-align :center
+               :height (px 40)
+               :line-height (px 40)
+               :background color/base}
+     [:.sidebar-toggle {:position :absolute
+                        :left (px 5)
+                        :line-height (px 40)
+                        :cursor :pointer}]
+     [:.right {:position :absolute
+               :right (px 5)
+               :line-height (px 40)}]]
     [:.footer {:position :absolute
                :bottom 0}]
     [:.children {:padding (px 10)}]

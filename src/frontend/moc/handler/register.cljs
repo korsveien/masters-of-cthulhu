@@ -40,7 +40,7 @@
        (dispatch [:register/set-errors errors])
        (do
          (dispatch [:register/reset-errors])
-         (ajax/request {:path [:api.user/register]
+         (ajax/request {:path [:api.auth/register]
                         :data data
                         :on-success #(dispatch [:register/send-success %])}))))
    db))

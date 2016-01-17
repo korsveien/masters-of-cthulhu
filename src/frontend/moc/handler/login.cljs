@@ -43,7 +43,7 @@
        (dispatch [:login/set-errors errors])
        (do
          (dispatch [:login/reset-errors])
-         (ajax/request {:path [:api.user/login]
+         (ajax/request {:path [:api.auth/login]
                         :data data
                         :on-success #(dispatch [:login/send-success %])
                         :on-fail #(dispatch [:login/send-failed %])}))))

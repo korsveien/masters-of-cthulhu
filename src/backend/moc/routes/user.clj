@@ -16,7 +16,7 @@
 
 (defn login-url [req token]
   (util/join-urls (util/base-url (get-in req [:headers "referer"]))
-                  (bidi/path-for urls :url.user/token :token token)))
+                  (bidi/path-for urls :url.auth/token :token token)))
 
 (defn login-msg [link valid-to]
   (str "A login url has been generated for you at " (util/base-url link)
@@ -56,12 +56,6 @@
       (send-login-url! req (:email normalized-email-params) token valid-to)
       {:status 200})))
 
-(defmethod routes :api.auth/me [req]
-  (if-let [user (util/current-user req)]
-    {:status 200
-     :body user}
-    {:status 401}))
-
 (defmethod routes :url.auth/token [{:keys [component/db params]}]
   (let [token-param (update params :token #(UUID/fromString %))
         token (db.token/get-valid-by-id db token-param)]
@@ -81,3 +75,9 @@
 
 (defmethod routes :api.auth/login [req]
   {:status 400})
+
+(defmethod routes :api.user/me [req]
+  (if-let [user (util/current-user req)]
+    {:status 200
+     :body user}
+    {:status 401}))

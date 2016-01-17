@@ -15,6 +15,8 @@
   [:h1 :h2 :h3 {:margin 0
                 :margin-bottom (px 20)}]
 
+  [:a {:color :black}]
+
   [:.full-width {:width "100%"}]
   [:.right-breather {:margin-right (px 10)}]
 
