@@ -76,6 +76,14 @@
 (defmethod routes :api.auth/login [req]
   {:status 400})
 
+(defmethod routes :api.auth/logout [{:keys [component/db] :as req}]
+  (if-let [user (util/current-user req)]
+    (do
+      (db.token/clear-for-user! db user)
+      (-> {:status 401}
+          (ru/set-cookie "moc" "deleted" {:path "/"})))
+    {:status 401}))
+
 (defmethod routes :api.user/me [req]
   (if-let [user (util/current-user req)]
     {:status 200

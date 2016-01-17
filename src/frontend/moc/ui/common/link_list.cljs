@@ -3,6 +3,8 @@
 
 (defn link-list [current-path & elements]
   (into [:ul.link-list]
-        (for [{:keys [text href]} elements]
+        (for [{:keys [text href dispatch]} elements]
           [:li {:class (if (= current-path (first href)) "active")}
-           [link {:path href} text]])))
+           [link {:path href
+                  :dispatch dispatch}
+            text]])))

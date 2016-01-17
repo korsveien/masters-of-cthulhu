@@ -25,6 +25,6 @@
                                        {:text "Password"
                                         :href [:url.user/password]}
                                        {:text "Log out"
-                                        :href [:url.auth/logout]}]}
+                                        :dispatch [:user/logout]}]}
                    :content {:header [(second (router handler))]}}
    [(first (router handler))]])

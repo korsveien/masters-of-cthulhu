@@ -16,3 +16,9 @@
    (when (= :url/index (-> db :route/info :handler))
      (router/navigate! [:url.user/password]))
    (assoc db :user/current user)))
+
+(register-handler
+ :user/logout
+ (fn [db _]
+   (ajax/request {:path [:api.auth/logout]})
+   (assoc db :user/current nil)))
