@@ -28,3 +28,8 @@
                                                   "password"]
                                          :token token})]
       (update user :password #(if % true false)))))
+
+(defn current-user-id [{:keys [component/db] :as req}]
+  (when-let [token (current-token req)]
+    (:id (db.user/get-by-token db {:fields ["users.id"]
+                                   :token token}))))

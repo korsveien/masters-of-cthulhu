@@ -4,7 +4,7 @@
             [moc.ui.common.input :refer [input]]
             [moc.ui.common.button :refer [button]]
             [moc.ui.common.link :refer [link]]
-            [moc.ui.common.handlers :refer [pass-to-dispatch]]))
+            [moc.ui.common.handlers :refer [dispatch-on-enter pass-to-dispatch]]))
 
 (defn footer []
   [link {:path [:url.auth/login]}
@@ -16,8 +16,7 @@
         state (subscribe [:register/form-state])
         errors (subscribe [:register/form-errors])]
     (fn [_]
-      [:div.register-page {:on-key-up #(when (= 13 (-> % .-keyCode))
-                                         (dispatch [:register/send @state]))}
+      [:div.register-page {:on-key-up #(dispatch-on-enter % [:register/send @state])}
        [:h1.logo "Masters of Cthulhu"]
        [box {:title "Login"
              :footer [footer]}
@@ -27,7 +26,7 @@
                 :disabled? (:success? @state)
                 :value (:email @state)
                 :error (:email @errors)
-                :on-change (pass-to-dispatch :register/set-email)}]
+                :on-change #(pass-to-dispatch % :register/set-email)}]
         (if (:success? @state)
           [:div "Success! An email should arrive shortly with further instructions."]
           [button {:is-block? true

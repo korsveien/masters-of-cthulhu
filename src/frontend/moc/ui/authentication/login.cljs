@@ -4,7 +4,7 @@
             [moc.ui.common.input :refer [input]]
             [moc.ui.common.button :refer [button]]
             [moc.ui.common.link :refer [link]]
-            [moc.ui.common.handlers :refer [pass-to-dispatch]]))
+            [moc.ui.common.handlers :refer [dispatch-on-enter pass-to-dispatch]]))
 
 (defn footer []
   [link {:path [:url.auth/register]}
@@ -16,8 +16,7 @@
         state (subscribe [:login/form-state])
         errors (subscribe [:login/form-errors])]
     (fn [_]
-      [:div.login-page {:on-key-up #(when (= 13 (-> % .-keyCode))
-                                      (dispatch [:login/send @state]))}
+      [:div.login-page {:on-key-up #(dispatch-on-enter % [:login/send @state])}
        [:h1.logo "Masters of Cthulhu"]
        [box {:title "Login"
              :footer [footer]}
@@ -26,13 +25,13 @@
                 :placeholder "Email"
                 :value (:email @state)
                 :error (:email @errors)
-                :on-change (pass-to-dispatch :login/set-email)}]
+                :on-change #(pass-to-dispatch % :login/set-email)}]
         [input {:icon "lock"
                 :type "password"
                 :placeholder "Password"
                 :value (:password @state)
                 :error (:password @errors)
-                :on-change (pass-to-dispatch :login/set-password)}]
+                :on-change #(pass-to-dispatch % :login/set-password)}]
         [button {:is-block? true
                  :loading? @loading?
                  :on-click #(dispatch [:login/send @state])}

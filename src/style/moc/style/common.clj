@@ -62,6 +62,9 @@
     [:.text {:display :inline-block}
      [:&:first-letter {:text-transform :capitalize}]]]])
 
+(def checkbox
+  [:.checkbox {:margin-bottom (px 20)}])
+
 (def button
   [:.button {:display :inline-block
              :background color/darker

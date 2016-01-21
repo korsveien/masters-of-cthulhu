@@ -4,12 +4,7 @@
 (def initial-state {:loading/count 0
                     :route/info nil
                     :user/current nil
-                    :ui {:user/login {:email ""
-                                      :password ""
-                                      :errors {}}
-                         :user/register {:email ""
-                                         :success? false
-                                         :errors {}}}})
+                    :ui {}})
 
 (register-handler
  :app/initialize

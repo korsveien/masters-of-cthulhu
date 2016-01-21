@@ -3,4 +3,5 @@
             [moc.handler.routes]
             [moc.handler.user]
             [moc.handler.login]
-            [moc.handler.register]))
+            [moc.handler.register]
+            [moc.handler.profile]))

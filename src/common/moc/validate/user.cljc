@@ -2,19 +2,28 @@
   (:require [bouncer.validators :as v]
             [moc.validate.util :refer [validate]]))
 
-(def password-validators
+(def password-validator
   [v/required v/string
-   [v/min-count 6 :message "password should at least consist of six letters"]])
-
-(def login-schema
-  {:email [v/required v/email]
-   :password password-validators})
+   [v/min-count 8 :message "Password should at least contain eight letters"]])
 
 (def register-schema
   {:email [v/required v/email]})
 
-(defn validate-register-schema [{:keys [password confirm-password] :as item}]
-  (let [errors (validate item login-schema)]
-    (if (= password confirm-password)
-      errors
-      (assoc errors :confirm-password "passwords must match"))))
+(def login-schema (assoc register-schema :password password-validator))
+
+(def passwordless-profile-schema
+  {:name [v/string
+          [v/min-count 2 :message "Name must at least contain two letters"]
+          [v/max-count 50 :message "Name cannot contain more than fifty letters"]]
+   :email [v/required v/email]})
+
+(def profile-schema (assoc passwordless-profile-schema :password password-validator))
+
+(defn validate-profile [profile]
+  (if (:change-password? profile)
+    (let [{:keys [password confirm-password]} profile
+          errors (validate profile profile-schema)]
+      (if (= password confirm-password)
+        errors
+        (assoc errors :confirm-password "Must match password")))
+    (validate profile passwordless-profile-schema)))

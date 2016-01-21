@@ -10,4 +10,5 @@
                 "api" {"/auth" {"/login" :api.auth/login
                                 "/register" :api.auth/register
                                 "/logout" :api.auth/logout}
-                       "/user" {"/me" :api.user/me}}}])
+                       "/user" {"/me" :api.user/me
+                                "/profile" :api.user/profile}}}])

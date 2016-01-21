@@ -4,6 +4,7 @@
             [clj-time.core :as ct]
             [bidi.bidi :as bidi]
             [ring.util.response :as ru]
+            [crypto.password.bcrypt :as password]
             [moc.routes.dispatch :refer [routes]]
             [moc.validate.util :refer [validate]]
             [moc.validate.user :as validate.user]
@@ -88,4 +89,29 @@
   (if-let [user (util/current-user req)]
     {:status 200
      :body user}
+    {:status 401}))
+
+(defmethod routes :api.user/profile [{:keys [component/db params] :as req}]
+  (if-let [uid (util/current-user-id req)]
+    (let [{:keys [name email password]} params
+          schema (if password
+                   validate.user/profile-schema
+                   validate.user/passwordless-profile-schema)
+          db-map (if password
+                   {:id uid
+                    :fields ["name" "email" "password"]
+                    :values [name email (password/encrypt password)]}
+                   {:id uid
+                    :fields ["name" "email"]
+                    :values [name email]})]
+      (if-let [errors (validate params schema)]
+        {:status 400
+         :body errors}
+        (try
+          (db.user/update! db db-map)
+          {:status 200
+           :body (util/current-user req)}
+          (catch Exception e
+            {:status 400
+             :body {:email "Another user is registered with this email"}}))))
     {:status 401}))

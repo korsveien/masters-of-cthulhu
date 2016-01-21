@@ -19,3 +19,8 @@ RETURNING id
 UPDATE users
 SET "logged-in" = CURRENT_TIMESTAMP
 WHERE id = :v:id
+
+--:name update! :!
+UPDATE users
+SET (:i*:fields, modified) = (:v*:values, now())
+WHERE id = :v:id

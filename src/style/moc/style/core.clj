@@ -23,6 +23,7 @@
   common/loading-page
   common/box
   common/input
+  common/checkbox
   common/button
   common/sidebar-layout
   common/link-list
