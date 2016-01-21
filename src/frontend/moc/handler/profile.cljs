@@ -66,7 +66,7 @@
          (ajax/request {:path [:api.user/profile]
                         :data (dissoc data :change-password? :confirm-password)
                         :on-success #(dispatch [:profile/send-success %])
-                        :on-fail #(dispatch [:profile/send-failed %])}))))
+                        :on-fail #(dispatch [:profile/set-errors %])}))))
    db))
 
 (register-handler
@@ -75,9 +75,3 @@
    (-> db
        (assoc :user/current user)
        (assoc-in [:ui :user/profile :success?] true))))
-
-(register-handler
- :profile/send-failed
- (fn [db [_ errors]]
-   (dispatch [:profile/set-errors errors])
-   db))

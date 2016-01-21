@@ -1,6 +1,7 @@
 (ns moc.handler.login
   (:require [re-frame.core :refer [dispatch register-handler]]
             [moc.ajax :as ajax]
+            [moc.router :refer [navigate!]]
             [moc.validate.util :refer [validate]]
             [moc.validate.user :as user]))
 
@@ -45,18 +46,8 @@
          (dispatch [:login/reset-errors])
          (ajax/request {:path [:api.auth/login]
                         :data data
-                        :on-success #(dispatch [:login/send-success %])
-                        :on-fail #(dispatch [:login/send-failed %])}))))
-   db))
-
-(register-handler
- :login/send-success
- (fn [db [_ data]]
-   (println data)
-   db))
-
-(register-handler
- :login/send-failed
- (fn [db [_ data]]
-   (println data)
+                        :on-success (fn [_]
+                                      (dispatch [:user/get-current])
+                                      (navigate! [:url.dashboard/index]))
+                        :on-fail #(dispatch [:login/set-errors %])}))))
    db))

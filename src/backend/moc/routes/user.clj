@@ -57,25 +57,38 @@
       (send-login-url! req (:email normalized-email-params) token valid-to)
       {:status 200})))
 
+(defn- login-user [db user-id res]
+  (let [login-token (uuid/v4)]
+    (db.user/update-logged-in! db {:id user-id})
+    (db.token/create! db {:token login-token
+                          :user-id user-id
+                          :valid-to (ct/plus (ct/now)
+                                             (ct/days 3))})
+    (ru/set-cookie res "moc" (str login-token)
+                   {:path "/"
+                    :max-age (* 60 60 24 3)})))
+
 (defmethod routes :url.auth/token [{:keys [component/db params]}]
   (let [token-param (update params :token #(UUID/fromString %))
         token (db.token/get-valid-by-id db token-param)]
     (if token
-      (let [login-token (uuid/v4)
-            user-id (:user-id token)]
-        (db.user/update-logged-in! db {:id user-id})
-        (db.token/create! db {:token login-token
-                              :user-id user-id
-                              :valid-to (ct/plus (ct/now)
-                                                 (ct/days 3))})
-        (-> (ru/redirect "/")
-            (ru/set-cookie "moc" (str login-token)
-                           {:path "/"
-                            :max-age (* 60 60 24 3)})))
+      (->> (ru/redirect "/")
+           (login-user db (:user-id token)))
       {:status 404})))
 
-(defmethod routes :api.auth/login [req]
-  {:status 400})
+(defmethod routes :api.auth/login [{:keys [component/db params]}]
+  (if-let [errors (validate params validate.user/login-schema)]
+    {:status 400
+     :body errors}
+    (if-let [user (db.user/get-by-email db {:fields ["id" "password"]
+                                            :email (:email params)})]
+      (if (password/check (:password params) (:password user))
+        (->> {:status 204}
+             (login-user db (:id user)))
+        {:status 400
+         :body {:password "Wrong email or password"}})
+      {:status 400
+       :body {:password "Wrong email or password"}})))
 
 (defmethod routes :api.auth/logout [{:keys [component/db] :as req}]
   (if-let [user (util/current-user req)]

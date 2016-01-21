@@ -13,7 +13,8 @@
 (register-handler
  :user/get-current-success
  (fn [db [_ user]]
-   (when (= :url.dashboard/index (-> db :route/info :handler))
+   (when (and (= :url.dashboard/index (-> db :route/info :handler))
+              (not (:password user)))
      (router/navigate! [:url.dashboard/profile]))
    (assoc db :user/current user)))
 
